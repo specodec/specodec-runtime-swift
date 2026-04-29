@@ -1,6 +1,6 @@
 import Foundation
 
-public class MsgPackReader {
+public class MsgPackReader: SpecReader {
     private let data: Data
     private var _pos: Int = 0
     private var containerCount: [Int] = []
@@ -123,9 +123,29 @@ public class MsgPackReader {
         }
     }
 
-    public func isNull() -> Bool {
-        _pos < data.count && data[_pos] == 0xC0
+    public func isNull() throws -> Bool {
+        return _pos < data.count && data[_pos] == 0xC0
     }
+
+    public func readInt32() throws -> Int32 { return Int32(truncatingIfNeeded: try readInt()) }
+    public func readInt64() throws -> Int64 { return try readInt() }
+    public func readUint32() throws -> UInt32 { return UInt32(truncatingIfNeeded: try readInt()) }
+    public func readUint64() throws -> UInt64 { return UInt64(bitPattern: try readInt()) }
+    public func readFloat32() throws -> Float { return Float(try readFloat()) }
+    public func readFloat64() throws -> Double { return try readFloat() }
+    public func readBytes() throws -> Data {
+        let b = try readByte()
+        let len: Int
+        if b == 0xC4 { len = Int(try readByte()) }
+        else if b == 0xC5 { len = Int(try readU16()) }
+        else if b == 0xC6 { len = Int(try readU32()) }
+        else { throw SCodecError(code: "internal", message: "msgpack: expected bin, got 0x\(String(b, radix: 16))") }
+        guard _pos + len <= data.count else { throw eof() }
+        let d = data[_pos..<_pos + len]
+        _pos += len
+        return d
+    }
+    public func readEnum() throws -> String { return try readString() }
 
     public func skip() throws {
         let b = try readByte()
@@ -186,8 +206,7 @@ public class MsgPackReader {
         return try readString()
     }
 
-    public func endObject() {
-    }
+    public func endObject() throws {}
 
     public func beginArray() throws {
         let n = try readArrayHeader()
@@ -204,6 +223,5 @@ public class MsgPackReader {
         return false
     }
 
-    public func endArray() {
-    }
+    public func endArray() throws {}
 }

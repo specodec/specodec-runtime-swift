@@ -6,9 +6,11 @@ public class SCodecError: Error {
     public init(code: String, message: String) { self.code = code; self.message = message }
 }
 
-public class JsonReader {
+public class JsonReader: SpecReader {
     private let src: String
     private var _pos: Int = 0
+    private var _firstField: [Bool] = []
+    private var _firstElem: [Bool] = []
 
     public init(_ data: Data) {
         self.src = String(data: data, encoding: .utf8) ?? ""
@@ -203,28 +205,59 @@ public class JsonReader {
 
     public func readEnum() throws -> String { try parseString() }
 
-    public func beginObject() throws { try expect("{") }
+    public func beginObject() throws {
+        try expect("{")
+        _firstField.append(true)
+    }
 
-    public func hasNextField() throws -> Bool { try peek() != "}" }
-
-    public func readFieldName() throws -> String { try parseString() }
-
-    public func nextFieldSeparator() throws {
+    public func hasNextField() throws -> Bool {
         let ch = try peek()
-        if ch == "," { _pos += 1 }
-        else if ch != "}" { throw SCodecError(code: "internal", message: "json: expected ',' or '}'") }
+        if ch == "}" {
+            _firstField.removeLast()
+            return false
+        }
+        let top = _firstField.count - 1
+        if !_firstField[top] {
+            if ch != "," { throw SCodecError(code: "internal", message: "json: expected ',' or '}', got '\(ch)'") }
+            _pos += 1
+        } else {
+            _firstField[top] = false
+        }
+        return true
+    }
+
+    public func readFieldName() throws -> String {
+        let key = try parseString()
+        ws()
+        if _pos < src.count && src[src.index(src.startIndex, offsetBy: _pos)] == ":" {
+            _pos += 1
+        } else {
+            throw SCodecError(code: "internal", message: "json: expected ':' after field name '\(key)'")
+        }
+        return key
     }
 
     public func endObject() throws { try expect("}") }
 
-    public func beginArray() throws { try expect("[") }
+    public func beginArray() throws {
+        try expect("[")
+        _firstElem.append(true)
+    }
 
-    public func hasNextElement() throws -> Bool { try peek() != "]" }
-
-    public func nextElementSeparator() throws {
+    public func hasNextElement() throws -> Bool {
         let ch = try peek()
-        if ch == "," { _pos += 1 }
-        else if ch != "]" { throw SCodecError(code: "internal", message: "json: expected ',' or ']'") }
+        if ch == "]" {
+            _firstElem.removeLast()
+            return false
+        }
+        let top = _firstElem.count - 1
+        if !_firstElem[top] {
+            if ch != "," { throw SCodecError(code: "internal", message: "json: expected ',' or ']', got '\(ch)'") }
+            _pos += 1
+        } else {
+            _firstElem[top] = false
+        }
+        return true
     }
 
     public func endArray() throws { try expect("]") }
@@ -247,21 +280,14 @@ public class JsonReader {
             throw SCodecError(code: "internal", message: "json: unterminated string in skip")
         case "{":
             try beginObject()
-            var first = true
             while try hasNextField() {
-                if !first { try nextFieldSeparator() }
-                first = false
                 _ = try readFieldName()
-                try expect(":")
                 try skip()
             }
             try endObject()
         case "[":
             try beginArray()
-            var first = true
             while try hasNextElement() {
-                if !first { try nextElementSeparator() }
-                first = false
                 try skip()
             }
             try endArray()
