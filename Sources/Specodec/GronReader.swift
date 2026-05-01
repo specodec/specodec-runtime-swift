@@ -1,92 +1,156 @@
 import Foundation
 
-public class GronReader {
-    private let src: String
-    private var _pos: Int = 0
+public class GronReader: SpecReader {
+    private var lines: [(path: String, rawValue: String)] = []
+    private var cursor: Int = 0
+    private var ctx: [(prefix: String, type: String, index: Int)] = []
 
     public init(_ data: Data) {
-        self.src = String(data: data, encoding: .utf8) ?? ""
+        guard let text = String(data: data, encoding: .utf8) else { return }
+        for raw in text.split(separator: "\n", omittingEmptySubsequences: false) {
+            let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+            if line.isEmpty { continue }
+            guard let eq = line.range(of: " = ") else { continue }
+            let path = String(line[..<eq.lowerBound])
+            var val = String(line[eq.upperBound...])
+            if val.hasSuffix(";") { val = String(val.dropLast()) }
+            lines.append((path, val))
+        }
     }
 
-    public var pos: Int { _pos }
-
-    public func readString() throws -> String {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readString not implemented")
+    private func unescape(_ s: String) throws -> String {
+        guard s.count >= 2 && s.first == "\"" && s.last == "\"" else {
+            throw SCodecError(code: "internal", message: "gron: expected quoted string")
+        }
+        let inner = String(s.dropFirst().dropLast())
+        var r = ""
+        var chars = Array(inner)
+        var i = 0
+        while i < chars.count {
+            if chars[i] == "\\" && i + 1 < chars.count {
+                i += 1
+                switch chars[i] {
+                case "\"": r.append("\"")
+                case "\\": r.append("\\")
+                case "/": r.append("/")
+                case "b": r.append("\u{08}")
+                case "f": r.append("\u{0C}")
+                case "n": r.append("\n")
+                case "r": r.append("\r")
+                case "t": r.append("\t")
+                case "u":
+                    let hex = String(chars[i+1..<min(i+5, chars.count)])
+                    if let v = UInt16(hex, radix: 16), let sc = UnicodeScalar(v) { r.append(Character(sc)) }
+                    i += 4
+                default: r.append(chars[i])
+                }
+            } else {
+                r.append(chars[i])
+            }
+            i += 1
+        }
+        return r
     }
 
-    public func readBool() throws -> Bool {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readBool not implemented")
+    private func b64decode(_ s: String) -> Data {
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        var result = Data()
+        let padCount = s.reversed().prefix(while: { $0 == "=" }).count
+        var i = s.startIndex
+        while i < s.endIndex && s[i] != "=" {
+            let b0 = chars.distance(from: chars.startIndex, to: chars.firstIndex(of: s[i])!); i = s.index(after: i)
+            var b1 = 0
+            if i < s.endIndex && s[i] != "=" { b1 = chars.distance(from: chars.startIndex, to: chars.firstIndex(of: s[i])!); i = s.index(after: i) }
+            var b2 = 0
+            if i < s.endIndex && s[i] != "=" { b2 = chars.distance(from: chars.startIndex, to: chars.firstIndex(of: s[i])!); i = s.index(after: i) }
+            var b3 = 0
+            if i < s.endIndex && s[i] != "=" { b3 = chars.distance(from: chars.startIndex, to: chars.firstIndex(of: s[i])!); i = s.index(after: i) }
+            result.append(UInt8((b0 << 2) | (b1 >> 4)))
+            result.append(UInt8(((b1 & 0xF) << 4) | (b2 >> 2)))
+            result.append(UInt8(((b2 & 3) << 6) | b3))
+        }
+        if padCount > 0 && result.count >= padCount { result.removeSubrange(Range(uncheckedBounds: (lower: result.count - padCount, upper: result.count))) }
+        return result
     }
 
-    public func readInt32() throws -> Int32 {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readInt32 not implemented")
-    }
-
-    public func readInt64() throws -> Int64 {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readInt64 not implemented")
-    }
-
-    public func readUint32() throws -> UInt32 {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readUint32 not implemented")
-    }
-
-    public func readUint64() throws -> UInt64 {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readUint64 not implemented")
-    }
-
+    public func readString() throws -> String { let v = try unescape(lines[cursor].rawValue); cursor += 1; return v }
+    public func readBool() throws -> Bool { let v = lines[cursor].rawValue == "true"; cursor += 1; return v }
+    public func readInt32() throws -> Int32 { let v = Int32(lines[cursor].rawValue)!; cursor += 1; return v }
+    public func readInt64() throws -> Int64 { let v = Int64(try unescape(lines[cursor].rawValue))!; cursor += 1; return v }
+    public func readUint32() throws -> UInt32 { let v = UInt32(lines[cursor].rawValue)!; cursor += 1; return v }
+    public func readUint64() throws -> UInt64 { let v = UInt64(try unescape(lines[cursor].rawValue))!; cursor += 1; return v }
     public func readFloat32() throws -> Float {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readFloat32 not implemented")
+        let v = lines[cursor].rawValue; cursor += 1
+        if v == "-0" { return Float(bitPattern: 1 << 31) }
+        return Float(v)!
     }
-
+    public func readFloat32AsDouble() throws -> Double {
+        let v = lines[cursor].rawValue; cursor += 1
+        if v == "-0" { return Double(bitPattern: 1 << 63) }
+        return Double(v)!
+    }
     public func readFloat64() throws -> Double {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readFloat64 not implemented")
+        let v = lines[cursor].rawValue; cursor += 1
+        if v == "-0" { return Double(bitPattern: 1 << 63) }
+        return Double(v)!
     }
-
     public func readNull() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readNull not implemented")
+        guard lines[cursor].rawValue == "null" else { throw SCodecError(code: "internal", message: "gron: expected null") }
+        cursor += 1
     }
-
-    public func readBytes() throws -> Data {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readBytes not implemented")
-    }
-
-    public func readEnum() throws -> String {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readEnum not implemented")
-    }
+    public func readBytes() throws -> Data { let v = b64decode(try unescape(lines[cursor].rawValue)); cursor += 1; return v }
+    public func readEnum() throws -> String { return try readString() }
 
     public func beginObject() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.beginObject not implemented")
+        let line = lines[cursor]; cursor += 1
+        ctx.append((prefix: line.path, type: "object", index: -1))
     }
 
     public func hasNextField() throws -> Bool {
-        throw SCodecError(code: "unimplemented", message: "GronReader.hasNextField not implemented")
+        guard cursor < lines.count else { return false }
+        let pfx = ctx.last!.prefix + "."
+        let p = lines[cursor].path
+        guard p.hasPrefix(pfx) else { return false }
+        let rem = String(p.dropFirst(pfx.count))
+        return !rem.contains(".") && !rem.contains("[")
     }
 
     public func readFieldName() throws -> String {
-        throw SCodecError(code: "unimplemented", message: "GronReader.readFieldName not implemented")
+        let pfx = ctx.last!.prefix + "."
+        return String(lines[cursor].path.dropFirst(pfx.count))
     }
 
-    public func endObject() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.endObject not implemented")
-    }
+    public func nextFieldSeparator() throws {}
+    public func endObject() throws { _ = ctx.removeLast() }
 
     public func beginArray() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.beginArray not implemented")
+        let line = lines[cursor]; cursor += 1
+        ctx.append((prefix: line.path, type: "array", index: -1))
     }
 
     public func hasNextElement() throws -> Bool {
-        throw SCodecError(code: "unimplemented", message: "GronReader.hasNextElement not implemented")
+        guard cursor < lines.count else { return false }
+        let arr = ctx.last!
+        let ni = arr.index + 1
+        let exp = arr.prefix + "[\(ni)]"
+        let p = lines[cursor].path
+        return p == exp || p.hasSuffix("." + exp) || p.hasPrefix(exp + ".") || p.hasPrefix(exp + "[")
     }
 
-    public func endArray() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.endArray not implemented")
-    }
+    public func nextElementSeparator() throws {}
+    public func nextElement() throws { ctx[ctx.count - 1].index += 1 }
+    public func endArray() throws { _ = ctx.removeLast() }
 
     public func isNull() throws -> Bool {
-        throw SCodecError(code: "unimplemented", message: "GronReader.isNull not implemented")
+        return cursor < lines.count && lines[cursor].rawValue == "null"
     }
 
     public func skip() throws {
-        throw SCodecError(code: "unimplemented", message: "GronReader.skip not implemented")
+        let sp = lines[cursor].path; cursor += 1
+        while cursor < lines.count {
+            let np = lines[cursor].path
+            if np.count > sp.count && (np.hasPrefix(sp + ".") || np.hasPrefix(sp + "[")) { cursor += 1 }
+            else { break }
+        }
     }
 }

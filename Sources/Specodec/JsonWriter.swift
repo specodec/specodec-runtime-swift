@@ -1,8 +1,10 @@
 import Foundation
 
-public class JsonWriter {
+public class JsonWriter: SpecWriter {
     private var buf: [UInt8] = []
     private var firstItem: [Bool] = []
+
+    public init() {}
 
     private func escape(_ s: String) {
         for scalar in s.unicodeScalars {
@@ -17,8 +19,8 @@ public class JsonWriter {
             case 0x00...0x1F:
                 buf.append(contentsOf: [0x5C, 0x75, 0x30, 0x30])
                 let hex = String(scalar.value, radix: 16)
-                buf.append(Character(hex.count == 1 ? "0" : hex[hex.startIndex]).asciiValue!)
-                buf.append(Character(hex.last!).asciiValue!)
+                let padded = hex.count == 1 ? "0" + hex : hex
+                buf.append(contentsOf: padded.utf8)
             default:
                 buf.append(contentsOf: String(scalar).utf8)
             }
@@ -71,14 +73,23 @@ public class JsonWriter {
         buf.append(0x22)
     }
 
+    private func fmtFloat(_ value: Double) -> String {
+        var s = String(value)
+        if s.contains(".") && !s.contains("e") && !s.contains("E") {
+            while s.hasSuffix("0") { s = String(s.dropLast()) }
+            if s.hasSuffix(".") { s = String(s.dropLast()) }
+        }
+        return s
+    }
+
     public func writeFloat32(_ value: Float) {
         if value.isNaN || value.isInfinite { fatalError("float32: NaN/Infinity not valid JSON") }
-        buf.append(contentsOf: String(value).utf8)
+        buf.append(contentsOf: fmtFloat(Double(value)).utf8)
     }
 
     public func writeFloat64(_ value: Double) {
         if value.isNaN || value.isInfinite { fatalError("float64: NaN/Infinity not valid JSON") }
-        buf.append(contentsOf: String(value).utf8)
+        buf.append(contentsOf: fmtFloat(value).utf8)
     }
 
     public func writeNull() {
@@ -97,7 +108,7 @@ public class JsonWriter {
         buf.append(0x22)
     }
 
-    public func beginObject() {
+    public func beginObject(_ fieldCount: Int = 0) {
         buf.append(0x7B)
         firstItem.append(true)
     }
@@ -108,6 +119,7 @@ public class JsonWriter {
         firstItem[top] = false
         buf.append(0x22)
         escape(name)
+        buf.append(0x22)
         buf.append(0x3A)
     }
 
@@ -116,7 +128,7 @@ public class JsonWriter {
         buf.append(0x7D)
     }
 
-    public func beginArray() {
+    public func beginArray(_ elementCount: Int = 0) {
         buf.append(0x5B)
         firstItem.append(true)
     }

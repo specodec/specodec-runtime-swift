@@ -1,9 +1,10 @@
 import Foundation
 
-public class SCodecError: Error {
+public final class SCodecError: Error, CustomStringConvertible {
     public let code: String
     public let message: String
     public init(code: String, message: String) { self.code = code; self.message = message }
+    public var description: String { "SCodecError(\(code): \(message))" }
 }
 
 public class JsonReader: SpecReader {
@@ -50,7 +51,6 @@ public class JsonReader: SpecReader {
         var result = ""
         while _pos < src.count {
             let c = src[src.index(src.startIndex, offsetBy: _pos)]
-            let code = c.asciiValue ?? 0
             if c == "\"" { _pos += 1; return result }
             if c == "\\" {
                 _pos += 1
@@ -99,7 +99,7 @@ public class JsonReader: SpecReader {
                     if let scalar = UnicodeScalar(cp) { result.append(Character(scalar)) }
                 default: throw SCodecError(code: "internal", message: "json: invalid escape '\\\(esc)'")
                 }
-            } else if code < 0x20 {
+            } else if let ascii = c.asciiValue, ascii < 0x20 {
                 throw SCodecError(code: "internal", message: "json: unescaped control char")
             } else {
                 result.append(c); _pos += 1
@@ -109,6 +109,7 @@ public class JsonReader: SpecReader {
     }
 
     private func parseNumberRaw() throws -> String {
+        ws()
         let start = _pos
         if _pos < src.count && src[src.index(src.startIndex, offsetBy: _pos)] == "-" { _pos += 1 }
         if _pos >= src.count { throw SCodecError(code: "internal", message: "json: unexpected end of number") }

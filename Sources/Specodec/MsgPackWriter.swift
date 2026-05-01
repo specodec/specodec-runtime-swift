@@ -1,11 +1,13 @@
 import Foundation
 
-public class MsgPackWriter {
+public class MsgPackWriter: SpecWriter {
     private var buf: [UInt8] = []
+
+    public init() {}
 
     private func writeByte(_ b: UInt8) { buf.append(b) }
     private func writeU16(_ v: UInt16) { buf.append(UInt8(v >> 8)); buf.append(UInt8(v & 0xFF)) }
-    private func writeU32(_ v: UInt32) { buf.append(UInt8(v >> 24)); buf.append(UInt8(v >> 16)); buf.append(UInt8(v >> 8)); buf.append(UInt8(v)) }
+    private func writeU32(_ v: UInt32) { buf.append(UInt8(v >> 24)); buf.append(UInt8((v >> 16) & 0xFF)); buf.append(UInt8((v >> 8) & 0xFF)); buf.append(UInt8(v & 0xFF)) }
     private func writeU64(_ v: UInt64) { writeU32(UInt32(v >> 32)); writeU32(UInt32(v & 0xFFFFFFFF)) }
 
     public func writeString(_ value: String) {
@@ -22,26 +24,26 @@ public class MsgPackWriter {
 
     public func writeInt32(_ value: Int32) {
         if value >= 0 && value <= 0x7F { writeByte(UInt8(value)) }
-        else if value < 0 && value >= -0x20 { writeByte(UInt8(bitPattern: UInt8(value & 0xFF))) }
+        else if value < 0 && value >= -0x20 { writeByte(UInt8(truncatingIfNeeded: value)) }
         else if value >= 0 && value <= 0xFF { writeByte(0xCC); writeByte(UInt8(value)) }
         else if value >= 0 && value <= 0xFFFF { writeByte(0xCD); writeU16(UInt16(value)) }
         else if value >= 0 { writeByte(0xCE); writeU32(UInt32(value)) }
-        else if value >= -0x80 { writeByte(0xD0); writeByte(UInt8(bitPattern: UInt8(value & 0xFF))) }
-        else if value >= -0x8000 { writeByte(0xD1); writeU16(UInt16(bitPattern: UInt16(value))) }
-        else { writeByte(0xD2); writeU32(UInt32(bitPattern: UInt32(value))) }
+        else if value >= -0x80 { writeByte(0xD0); writeByte(UInt8(truncatingIfNeeded: value)) }
+        else if value >= -0x8000 { writeByte(0xD1); writeU16(UInt16(truncatingIfNeeded: value)) }
+        else { writeByte(0xD2); writeU32(UInt32(truncatingIfNeeded: value)) }
     }
 
     public func writeInt64(_ value: Int64) {
         if value >= 0 && value <= 0x7F { writeByte(UInt8(value)) }
-        else if value < 0 && value >= -0x20 { writeByte(UInt8(bitPattern: UInt8(value & 0xFF))) }
+        else if value < 0 && value >= -0x20 { writeByte(UInt8(truncatingIfNeeded: value)) }
         else if value >= 0 && value <= 0xFF { writeByte(0xCC); writeByte(UInt8(value)) }
         else if value >= 0 && value <= 0xFFFF { writeByte(0xCD); writeU16(UInt16(value)) }
         else if value >= 0 && value <= Int64(UInt32.max) { writeByte(0xCE); writeU32(UInt32(value)) }
         else if value >= 0 { writeByte(0xCF); writeU64(UInt64(value)) }
-        else if value >= -0x80 { writeByte(0xD0); writeByte(UInt8(bitPattern: UInt8(value & 0xFF))) }
-        else if value >= -0x8000 { writeByte(0xD1); writeU16(UInt16(bitPattern: UInt16(Int16(value)))) }
-        else if value >= -0x80000000 { writeByte(0xD2); writeU32(UInt32(bitPattern: UInt32(Int32(value)))) }
-        else { writeByte(0xD3); writeU64(UInt64(bitPattern: UInt64(value))) }
+        else if value >= -0x80 { writeByte(0xD0); writeByte(UInt8(truncatingIfNeeded: value)) }
+        else if value >= -0x8000 { writeByte(0xD1); writeU16(UInt16(truncatingIfNeeded: value)) }
+        else if value >= -0x80000000 { writeByte(0xD2); writeU32(UInt32(truncatingIfNeeded: value)) }
+        else { writeByte(0xD3); writeU64(UInt64(bitPattern: value)) }
     }
 
     public func writeUint32(_ value: UInt32) {
@@ -88,6 +90,7 @@ public class MsgPackWriter {
     }
 
     public func writeField(_ name: String) { writeString(name) }
+    public func writeEnum(_ value: String) { writeString(value) }
     public func endObject() {}
 
     public func beginArray(_ elementCount: Int) {

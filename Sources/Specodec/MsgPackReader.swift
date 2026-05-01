@@ -87,6 +87,20 @@ public class MsgPackReader: SpecReader {
         return s
     }
 
+    private func readU64() throws -> UInt64 {
+        guard _pos + 8 <= data.count else { throw eof() }
+        var raw: UInt64 = 0
+        for i in 0..<8 {
+            raw = (raw << 8) | UInt64(data[_pos + i])
+        }
+        _pos += 8
+        return raw
+    }
+
+    private func readI64() throws -> Int64 {
+        Int64(bitPattern: try readU64())
+    }
+
     public func readInt() throws -> Int64 {
         let b = try readByte()
         if b <= 0x7F { return Int64(b) }
@@ -95,9 +109,11 @@ public class MsgPackReader: SpecReader {
         case 0xCC: return Int64(try readByte())
         case 0xCD: return Int64(try readU16())
         case 0xCE: return Int64(try readU32())
+        case 0xCF: return Int64(bitPattern: try readU64())
         case 0xD0: return Int64(Int8(bitPattern: try readByte()))
         case 0xD1: return Int64(try readI16())
         case 0xD2: return Int64(try readI32())
+        case 0xD3: return try readI64()
         default: throw SCodecError(code: "internal", message: "msgpack: expected int, got 0x\(String(b, radix: 16))")
         }
     }
@@ -106,7 +122,17 @@ public class MsgPackReader: SpecReader {
         let b = try readByte()
         if b == 0xCA { return Double(try readF32()) }
         if b == 0xCB { return try readF64() }
-        throw SCodecError(code: "internal", message: "msgpack: expected float, got 0x\(String(b, radix: 16))")
+        if b <= 0x7F { return Double(b) }
+        if b >= 0xE0 { return Double(Int8(bitPattern: b)) }
+        switch b {
+        case 0xCC: return Double(try readByte())
+        case 0xCD: return Double(try readU16())
+        case 0xCE: return Double(try readU32())
+        case 0xD0: return Double(Int8(bitPattern: try readByte()))
+        case 0xD1: return Double(try readI16())
+        case 0xD2: return Double(try readI32())
+        default: throw SCodecError(code: "internal", message: "msgpack: expected float, got 0x\(String(b, radix: 16))")
+        }
     }
 
     public func readBool() throws -> Bool {
