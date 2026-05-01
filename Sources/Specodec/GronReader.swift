@@ -84,11 +84,6 @@ public class GronReader: SpecReader {
         if v == "-0" { return Float(bitPattern: 1 << 31) }
         return Float(v)!
     }
-    public func readFloat32AsDouble() throws -> Double {
-        let v = lines[cursor].rawValue; cursor += 1
-        if v == "-0" { return Double(bitPattern: 1 << 63) }
-        return Double(v)!
-    }
     public func readFloat64() throws -> Double {
         let v = lines[cursor].rawValue; cursor += 1
         if v == "-0" { return Double(bitPattern: 1 << 63) }
@@ -120,7 +115,6 @@ public class GronReader: SpecReader {
         return String(lines[cursor].path.dropFirst(pfx.count))
     }
 
-    public func nextFieldSeparator() throws {}
     public func endObject() throws { _ = ctx.removeLast() }
 
     public func beginArray() throws {
@@ -137,7 +131,6 @@ public class GronReader: SpecReader {
         return p == exp || p.hasSuffix("." + exp) || p.hasPrefix(exp + ".") || p.hasPrefix(exp + "[")
     }
 
-    public func nextElementSeparator() throws {}
     public func nextElement() throws { ctx[ctx.count - 1].index += 1 }
     public func endArray() throws { _ = ctx.removeLast() }
 
