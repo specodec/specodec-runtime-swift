@@ -14,17 +14,17 @@ public struct SpecCodec<T>: @unchecked Sendable {
 }
 
 // ---------------------------------------------------------------------------
-// FormatEntry
+// FormatEntry: a reader/writer factory pair for one format
 // ---------------------------------------------------------------------------
 public struct FormatEntry {
-    public let contentType: String
+    public let name: String           // e.g. "json", "msgpack", "gron"
     public let newWriter: () -> any SpecWriter
     public let newReader: (Data) -> any SpecReader
 
-    public init(contentType: String,
+    public init(name: String,
                 newWriter: @escaping () -> any SpecWriter,
                 newReader: @escaping (Data) -> any SpecReader) {
-        self.contentType = contentType
+        self.name = name
         self.newWriter = newWriter
         self.newReader = newReader
     }
@@ -44,10 +44,9 @@ public class FormatRegistry: @unchecked Sendable {
         return self
     }
 
-    public func match(_ contentType: String) -> FormatEntry {
+    public func match(_ format: String) -> FormatEntry {
         for e in entries {
-            let sub = e.contentType.split(separator: "/").last.map(String.init) ?? ""
-            if contentType.contains(sub) { return e }
+            if format.contains(e.name) { return e }
         }
         return entries[0]
     }
@@ -58,13 +57,13 @@ public class FormatRegistry: @unchecked Sendable {
 // ---------------------------------------------------------------------------
 public let defaultRegistry: FormatRegistry = {
     let r = FormatRegistry()
-    r.register(FormatEntry(contentType: "application/json",
+    r.register(FormatEntry(name: "json",
                            newWriter: { JsonWriter() },
                            newReader: { JsonReader($0) }))
-    r.register(FormatEntry(contentType: "application/msgpack",
+    r.register(FormatEntry(name: "msgpack",
                            newWriter: { MsgPackWriter() },
                            newReader: { MsgPackReader($0) }))
-    r.register(FormatEntry(contentType: "application/gron",
+    r.register(FormatEntry(name: "gron",
                            newWriter: { GronWriter() },
                            newReader: { GronReader($0) }))
     return r
@@ -73,21 +72,21 @@ public let defaultRegistry: FormatRegistry = {
 // ---------------------------------------------------------------------------
 // dispatch / respond
 // ---------------------------------------------------------------------------
-public func dispatch<T>(codec: SpecCodec<T>, body: Data, contentType: String,
+public func dispatch<T>(codec: SpecCodec<T>, body: Data, format: String,
                         registry: FormatRegistry = defaultRegistry) throws -> T {
-    let fmt = registry.match(contentType)
+    let fmt = registry.match(format)
     return try codec.decode(fmt.newReader(body))
 }
 
 public struct RespondResult {
     public let body: Data
-    public let contentType: String
+    public let name: String   // format name: "json" | "msgpack" | "gron"
 }
 
-public func respond<T>(codec: SpecCodec<T>, obj: T, accept: String,
+public func respond<T>(codec: SpecCodec<T>, obj: T, format: String,
                        registry: FormatRegistry = defaultRegistry) -> RespondResult {
-    let fmt = registry.match(accept)
+    let fmt = registry.match(format)
     let w = fmt.newWriter()
     codec.encode(w, obj)
-    return RespondResult(body: w.toBytes(), contentType: fmt.contentType)
+    return RespondResult(body: w.toBytes(), name: fmt.name)
 }
