@@ -46,7 +46,7 @@ public class FormatRegistry: @unchecked Sendable {
 
     public func match(_ format: String) -> FormatEntry {
         for e in entries {
-            if format.contains(e.name) { return e }
+            if format == e.name { return e }
         }
         return entries[0]
     }
