@@ -64,21 +64,12 @@ public class GronWriter: SpecWriter {
 
     public func writeFloat32(_ value: Float) {
         if value.isNaN || value.isInfinite { fatalError("float32: NaN/Infinity not valid") }
-        if value == 0 && value.sign == .minus { emit("-0"); return }
-        emit(fmtFloat32(value))
+        emit(formatFloat32(value))
     }
 
     public func writeFloat64(_ value: Double) {
-        if value == 0 && value.sign == .minus { emit("-0"); return }
-        emit(stripTrailing(String(value)))
-    }
-
-    private func stripTrailing(_ s: String) -> String {
-        guard s.contains(".") && !s.contains("E") && !s.contains("e") else { return s }
-        var r = s
-        while r.hasSuffix("0") { r = String(r.dropLast()) }
-        if r.hasSuffix(".") { r = String(r.dropLast()) }
-        return r.isEmpty ? "0" : r
+        if value.isNaN || value.isInfinite { fatalError("float64: NaN/Infinity not valid") }
+        emit(formatFloat64(value))
     }
 
     public func writeNull() { emit("null") }

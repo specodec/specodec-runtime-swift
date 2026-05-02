@@ -81,12 +81,10 @@ public class GronReader: SpecReader {
     public func readUint64() throws -> UInt64 { let v = UInt64(try unescape(lines[cursor].rawValue))!; cursor += 1; return v }
     public func readFloat32() throws -> Float {
         let v = lines[cursor].rawValue; cursor += 1
-        if v == "-0" { return Float(bitPattern: 1 << 31) }
         return Float(v)!
     }
     public func readFloat64() throws -> Double {
         let v = lines[cursor].rawValue; cursor += 1
-        if v == "-0" { return Double(bitPattern: 1 << 63) }
         return Double(v)!
     }
     public func readNull() throws {
