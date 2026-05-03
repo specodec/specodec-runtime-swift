@@ -81,10 +81,16 @@ public class GronReader: SpecReader {
     public func readUint64() throws -> UInt64 { let v = UInt64(try unescape(lines[cursor].rawValue))!; cursor += 1; return v }
     public func readFloat32() throws -> Float {
         let v = lines[cursor].rawValue; cursor += 1
+        if v == "\"NaN\"" { return Float.nan }
+        if v == "\"Infinity\"" { return Float.infinity }
+        if v == "\"-Infinity\"" { return -Float.infinity }
         return Float(v)!
     }
     public func readFloat64() throws -> Double {
         let v = lines[cursor].rawValue; cursor += 1
+        if v == "\"NaN\"" { return Double.nan }
+        if v == "\"Infinity\"" { return Double.infinity }
+        if v == "\"-Infinity\"" { return -Double.infinity }
         return Double(v)!
     }
     public func readNull() throws {
@@ -126,10 +132,11 @@ public class GronReader: SpecReader {
         let ni = arr.index + 1
         let exp = arr.prefix + "[\(ni)]"
         let p = lines[cursor].path
-        return p == exp || p.hasSuffix("." + exp) || p.hasPrefix(exp + ".") || p.hasPrefix(exp + "[")
+        let hasNext = p == exp || p.hasSuffix("." + exp) || p.hasPrefix(exp + ".") || p.hasPrefix(exp + "[")
+        if hasNext { ctx[ctx.count - 1].index = ni }
+        return hasNext
     }
 
-    public func nextElement() throws { ctx[ctx.count - 1].index += 1 }
     public func endArray() throws { _ = ctx.removeLast() }
 
     public func isNull() throws -> Bool {

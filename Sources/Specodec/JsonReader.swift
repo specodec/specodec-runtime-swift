@@ -183,12 +183,28 @@ public class JsonReader: SpecReader {
     }
 
     public func readFloat32() throws -> Float {
+        if try peek() == "\"" {
+            let s = try parseString()
+            if s == "NaN" { return Float.nan }
+            if s == "Infinity" { return Float.infinity }
+            if s == "-Infinity" { return -Float.infinity }
+            guard let v = Float(s) else { throw SCodecError(code: "internal", message: "json: invalid float32: \(s)") }
+            return v
+        }
         let raw = try parseNumberRaw()
         guard let v = Float(raw) else { throw SCodecError(code: "internal", message: "json: invalid float32: \(raw)") }
         return v
     }
 
     public func readFloat64() throws -> Double {
+        if try peek() == "\"" {
+            let s = try parseString()
+            if s == "NaN" { return Double.nan }
+            if s == "Infinity" { return Double.infinity }
+            if s == "-Infinity" { return -Double.infinity }
+            guard let v = Double(s) else { throw SCodecError(code: "internal", message: "json: invalid float64: \(s)") }
+            return v
+        }
         let raw = try parseNumberRaw()
         guard let v = Double(raw) else { throw SCodecError(code: "internal", message: "json: invalid float64: \(raw)") }
         return v

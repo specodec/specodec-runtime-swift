@@ -74,13 +74,23 @@ public class JsonWriter: SpecWriter {
     }
 
     public func writeFloat32(_ value: Float) {
-        if value.isNaN || value.isInfinite { fatalError("float32: NaN/Infinity not valid JSON") }
-        buf.append(contentsOf: formatFloat32(value).utf8)
+        if value.isNaN {
+            buf.append(contentsOf: "\"NaN\"".utf8)
+        } else if value.isInfinite {
+            buf.append(contentsOf: value > 0 ? "\"Infinity\"".utf8 : "\"-Infinity\"".utf8)
+        } else {
+            buf.append(contentsOf: formatFloat32(value).utf8)
+        }
     }
 
     public func writeFloat64(_ value: Double) {
-        if value.isNaN || value.isInfinite { fatalError("float64: NaN/Infinity not valid JSON") }
-        buf.append(contentsOf: formatFloat64(value).utf8)
+        if value.isNaN {
+            buf.append(contentsOf: "\"NaN\"".utf8)
+        } else if value.isInfinite {
+            buf.append(contentsOf: value > 0 ? "\"Infinity\"".utf8 : "\"-Infinity\"".utf8)
+        } else {
+            buf.append(contentsOf: formatFloat64(value).utf8)
+        }
     }
 
     public func writeNull() {

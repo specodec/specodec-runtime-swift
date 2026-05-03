@@ -63,13 +63,23 @@ public class GronWriter: SpecWriter {
     public func writeUint64(_ value: UInt64) { emit("\"\(value)\"") }
 
     public func writeFloat32(_ value: Float) {
-        if value.isNaN || value.isInfinite { fatalError("float32: NaN/Infinity not valid") }
-        emit(formatFloat32(value))
+        if value.isNaN {
+            emit("\"NaN\"")
+        } else if value.isInfinite {
+            emit(value > 0 ? "\"Infinity\"" : "\"-Infinity\"")
+        } else {
+            emit(formatFloat32(value))
+        }
     }
 
     public func writeFloat64(_ value: Double) {
-        if value.isNaN || value.isInfinite { fatalError("float64: NaN/Infinity not valid") }
-        emit(formatFloat64(value))
+        if value.isNaN {
+            emit("\"NaN\"")
+        } else if value.isInfinite {
+            emit(value > 0 ? "\"Infinity\"" : "\"-Infinity\"")
+        } else {
+            emit(formatFloat64(value))
+        }
     }
 
     public func writeNull() { emit("null") }
