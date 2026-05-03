@@ -1,0 +1,19 @@
+{
+  "": {
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/primary.swiftdeps"
+  },
+  "/app/tests/interop/emit/Sources/EmitMain/AllTypesTypes.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/AllTypesTypes.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/AllTypesTypes.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/AllTypesTypes~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/AllTypesTypes.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/AllTypesTypes.dia"
+  },
+  "/app/tests/interop/emit/Sources/EmitMain/main.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/main.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/main.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/main~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/main.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/emit_swift.build/main.dia"
+  }
+}

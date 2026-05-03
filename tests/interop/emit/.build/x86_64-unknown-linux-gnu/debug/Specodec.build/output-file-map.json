@@ -1,0 +1,110 @@
+{
+  "": {
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/primary.swiftdeps"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/FloatFmt.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/GronReader.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/GronWriter.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/JsonReader.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/JsonWriter.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/MsgPackReader.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/MsgPackWriter.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/SpecCodec.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/SpecReader.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/SpecWriter.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/ryu/RyuF32.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/ryu/RyuF64.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/ryu/RyuMath.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/ryu/TablesF32.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.dia"
+  },
+  "/app/tests/interop/emit/Sources/Specodec/ryu/TablesF64.swift": {
+    "dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.d",
+    "object": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.swift.o",
+    "swiftmodule": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64~partial.swiftmodule",
+    "swift-dependencies": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.swiftdeps",
+    "diagnostics": "/app/tests/interop/emit/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.dia"
+  }
+}

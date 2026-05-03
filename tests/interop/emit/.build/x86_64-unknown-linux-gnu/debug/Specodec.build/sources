@@ -1,0 +1,15 @@
+/app/tests/interop/emit/Sources/Specodec/FloatFmt.swift
+/app/tests/interop/emit/Sources/Specodec/GronReader.swift
+/app/tests/interop/emit/Sources/Specodec/GronWriter.swift
+/app/tests/interop/emit/Sources/Specodec/JsonReader.swift
+/app/tests/interop/emit/Sources/Specodec/JsonWriter.swift
+/app/tests/interop/emit/Sources/Specodec/MsgPackReader.swift
+/app/tests/interop/emit/Sources/Specodec/MsgPackWriter.swift
+/app/tests/interop/emit/Sources/Specodec/SpecCodec.swift
+/app/tests/interop/emit/Sources/Specodec/SpecReader.swift
+/app/tests/interop/emit/Sources/Specodec/SpecWriter.swift
+/app/tests/interop/emit/Sources/Specodec/ryu/RyuF32.swift
+/app/tests/interop/emit/Sources/Specodec/ryu/RyuF64.swift
+/app/tests/interop/emit/Sources/Specodec/ryu/RyuMath.swift
+/app/tests/interop/emit/Sources/Specodec/ryu/TablesF32.swift
+/app/tests/interop/emit/Sources/Specodec/ryu/TablesF64.swift

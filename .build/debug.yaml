@@ -1,0 +1,54 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "PackageStructure": ["<PackageStructure>"]
+  "Specodec-debug.module": ["<Specodec-debug.module>"]
+  "main": ["<Specodec-debug.module>"]
+  "test": ["<Specodec-debug.module>"]
+default: "main"
+nodes:
+  "/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/Specodec.swiftmodule.o":
+    tool: shell
+    inputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.swiftmodule"]
+    outputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/Specodec.swiftmodule.o"]
+    description: "Wrapping AST for Specodec for debugging"
+    args: ["/home/ytr/.nix-profile/bin/swiftc","-modulewrap","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.swiftmodule","-o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/Specodec.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/FloatFmt.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/GronReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/GronWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/JsonReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/JsonWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/MsgPackReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/MsgPackWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecCodec.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuF32.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuF64.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuMath.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/TablesF32.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/TablesF64.swift"]
+    outputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/sources"]
+    description: "Write auxiliary file /home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/sources"
+
+  "/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/swift-version-8EE6D606DDA268.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/home/ytr/.nix-profile/bin/swiftc"]
+    outputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/swift-version-8EE6D606DDA268.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/swift-version-8EE6D606DDA268.txt"
+
+  "<Specodec-debug.module>":
+    tool: phony
+    inputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.swiftmodule"]
+    outputs: ["<Specodec-debug.module>"]
+
+  "C.Specodec-debug.module":
+    tool: shell
+    inputs: ["/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/FloatFmt.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/GronReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/GronWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/JsonReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/JsonWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/MsgPackReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/MsgPackWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecCodec.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecReader.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/SpecWriter.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuF32.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuF64.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/RyuMath.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/TablesF32.swift","/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/ryu/TablesF64.swift","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/swift-version-8EE6D606DDA268.txt","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/sources"]
+    outputs: ["/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/FloatFmt.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/GronWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/JsonWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/MsgPackWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecCodec.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecReader.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/SpecWriter.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF32.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuF64.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/RyuMath.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF32.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/TablesF64.swift.o","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.swiftmodule"]
+    description: "Compiling Swift Module 'Specodec' (15 sources)"
+    args: ["/home/ytr/.nix-profile/bin/swiftc","-module-name","Specodec","-emit-dependencies","-emit-module","-emit-module-path","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.swiftmodule","-output-file-map","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/output-file-map.json","-parse-as-library","-incremental","-c","@/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/Specodec.build/sources","-I","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug","-target","x86_64-unknown-linux-gnu","-swift-version","5","-enable-batch-mode","-Onone","-enable-testing","-j128","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/home/ytr/Specodec/specodec-runtime-swift/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","specodec_runtime_swift","-Xcc","-fno-omit-frame-pointer"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/home/ytr/Specodec/specodec-runtime-swift/Sources/Specodec/","/home/ytr/Specodec/specodec-runtime-swift/Package.swift","/home/ytr/Specodec/specodec-runtime-swift/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

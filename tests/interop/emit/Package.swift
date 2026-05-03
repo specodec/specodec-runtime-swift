@@ -1,18 +1,17 @@
-// swift-tools-version:6.1
+// swift-tools-version:5.10
 import PackageDescription
 
 let package = Package(
     name: "emit_swift",
-    dependencies: [
-        .package(name: "specodec-swift", path: "/specodec-swift"),
-    ],
     targets: [
         .executableTarget(
-            name: "run_swift",
-            dependencies: [
-                .product(name: "Specodec", package: "specodec-swift"),
-            ],
-            path: "Sources/run_swift"
+            name: "emit_swift",
+            dependencies: ["Specodec"],
+            path: "Sources/EmitMain"
         ),
+        .target(
+            name: "Specodec",
+            path: "Sources/Specodec"
+        )
     ]
 )

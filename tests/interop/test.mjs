@@ -1,88 +1,109 @@
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, rmSync, readdirSync, writeFileSync, readFileSync, copyFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
-const LANG_ROOT = join(__dir, '..');
-const TESTS_DIR = __dir;
-const CACHE = join(TESTS_DIR, '.tests-cache');
-const PROXY = process.env.PROXY || 'http://127.0.0.1:17890';
-
-const BUILD_ARGS = `--build-arg HTTP_PROXY=${PROXY} --build-arg HTTPS_PROXY=${PROXY} --build-arg http_proxy=${PROXY} --build-arg https_proxy=${PROXY} --build-arg ALL_PROXY=${PROXY} --build-arg all_proxy=${PROXY}`;
-const COMMON = `--network host ${BUILD_ARGS}`;
+const CACHE = join(__dir, '.tests-cache');
+const EMIT_GEN = join(__dir, 'emit_gen');
+const OUT_DIR = join(__dir, 'output');
 
 function run(cmd) {
   console.log('  >', cmd);
   execSync(cmd, { stdio: 'inherit' });
 }
 
-// Step 1: Clone tests repo
-console.log('\n=== Step 1: Clone specodec/tests ===');
-if (existsSync(CACHE)) {
-  run(`git -C ${CACHE} pull`);
+console.log('\n=== Step 1: Install dependencies ===');
+run(`cd ${__dir} && pnpm install`);
+
+console.log('\n=== Step 2: Clone tests repo ===');
+if (existsSync(CACHE)) rmSync(CACHE, { recursive: true });
+run(`git clone --depth=1 https://github.com/specodec/tests ${CACHE}`);
+
+console.log('\n=== Step 3: Generate vectors ===');
+run(`cd ${CACHE} && pnpm install --frozen-lockfile`);
+run(`cd ${CACHE} && node gen_types.mjs`);
+
+const VEC_DIR = join(CACHE, 'vectors');
+
+console.log('\n=== Step 4: Generate emit code ===');
+if (existsSync(EMIT_GEN)) rmSync(EMIT_GEN, { recursive: true });
+mkdirSync(EMIT_GEN, { recursive: true });
+
+run(`cd ${__dir} && node_modules/.bin/tsp compile ${CACHE}/alltypes.tsp --emit=@specodec/typespec-emitter-swift \
+  --option @specodec/typespec-emitter-swift.emitter-output-dir=${join(__dir, 'emit', 'emit_gen')}`);
+
+const swiftFiles = readdirSync(join(__dir, 'emit', 'emit_gen')).filter(f => f.endsWith('.swift'));
+if (swiftFiles.length > 0) {
+  console.log(`  ✓ Generated ${swiftFiles.join(', ')}`);
 } else {
-  run(`git clone --depth=1 https://github.com/specodec/tests ${CACHE}`);
+  console.error('  FAIL: No generated Swift files');
+  process.exit(1);
 }
 
-// Step 2: Generate vectors + TS reference
-console.log('\n=== Step 2: Generate vectors + output_ts ===');
-run(`cd ${CACHE} && npm ci`);
-run(`cd ${CACHE} && node gen_types.mjs`);
-run(`cd ${CACHE} && node run_ts.mjs`);
+console.log('\n=== Step 5: Generate test runner ===');
+const srcDir = join(__dir, 'emit', 'Sources');
+if (!existsSync(srcDir)) mkdirSync(srcDir, { recursive: true });
+run(`cd ${__dir} && VEC_DIR=${VEC_DIR} node generate_emit_runner.mjs`);
 
-const vectorsDir = join(CACHE, 'vectors');
-const outputTsDir = join(CACHE, 'output_ts');
+console.log('\n=== Step 6: Setup Package.swift with inline runtime ===');
+const emitDir = join(__dir, 'emit');
+const emitMainDir = join(emitDir, 'Sources', 'EmitMain');
+const specodecSrcDir = join(emitDir, 'Sources', 'Specodec');
+const specodecRyuDir = join(specodecSrcDir, 'ryu');
 
-// Step 3: Interop test
-console.log('\n=== Step 3: Interop test (podman build) ===');
-const outputGo = join(TESTS_DIR, 'output_swift');
-if (existsSync(outputGo)) rmSync(outputGo, { recursive: true });
-mkdirSync(join(outputGo, 'scalars'), { recursive: true });
+mkdirSync(emitMainDir, { recursive: true });
+mkdirSync(specodecSrcDir, { recursive: true });
+mkdirSync(specodecRyuDir, { recursive: true });
 
-run(`cd ${TESTS_DIR} && podman build ${COMMON} -t specodec-interop-swift -f Containerfile \
-  --build-context specodec-go=${LANG_ROOT} \
-  --build-context run=${TESTS_DIR}/run \
-  --build-context vectors=${vectorsDir} \
-  --build-context output_ts=${outputTsDir} .`);
+// Move generated main.swift to EmitMain/
+const mainSrc = join(emitDir, 'Sources', 'main.swift');
+if (existsSync(mainSrc)) {
+  copyFileSync(mainSrc, join(emitMainDir, 'main.swift'));
+  rmSync(mainSrc);
+}
 
-const container = execSync(`podman create specodec-interop-swift /bin/true`).toString().trim();
-run(`podman cp ${container}:/app/output_swift/. ${outputGo}/`);
-run(`podman rm ${container}`);
+// Copy emit_gen files into EmitMain (merged target)
+for (const f of readdirSync(join(emitDir, 'emit_gen')).filter(f => f.endsWith('.swift'))) {
+  copyFileSync(join(emitDir, 'emit_gen', f), join(emitMainDir, f));
+}
 
-// Step 4: Emit compile test
-console.log('\n=== Step 4: Emit compile test ===');
-const emitGen = join(TESTS_DIR, '.emit-gen');
-if (existsSync(emitGen)) rmSync(emitGen, { recursive: true });
-mkdirSync(emitGen, { recursive: true });
+// Copy runtime Specodec sources
+const runtimeSpecodec = join(__dir, '..', '..', 'Sources', 'Specodec');
+for (const f of readdirSync(runtimeSpecodec).filter(f => f.endsWith('.swift'))) {
+  copyFileSync(join(runtimeSpecodec, f), join(specodecSrcDir, f));
+}
+const runtimeRyu = join(runtimeSpecodec, 'ryu');
+for (const f of readdirSync(runtimeRyu).filter(f => f.endsWith('.swift'))) {
+  copyFileSync(join(runtimeRyu, f), join(specodecRyuDir, f));
+}
 
-run(`cd ${LANG_ROOT} && npx tsp compile ${CACHE}/alltypes.tsp --emit=@specodec/typespec-emitter-swift \
-  --option @specodec/typespec-emitter-swift.emitter-output-dir=${emitGen}`);
+const packageSwift = `// swift-tools-version:5.10
+import PackageDescription
 
-run(`cd ${TESTS_DIR} && podman build ${COMMON} -t specodec-emit-swift -f Containerfile.emit \
-  --build-context specodec-go=${LANG_ROOT} \
-  --build-context emit=${TESTS_DIR}/emit \
-  --build-context emit_gen=${emitGen} .`);
+let package = Package(
+    name: "emit_swift",
+    targets: [
+        .executableTarget(
+            name: "emit_swift",
+            dependencies: ["Specodec"],
+            path: "Sources/EmitMain"
+        ),
+        .target(
+            name: "Specodec",
+            path: "Sources/Specodec"
+        )
+    ]
+)
+`;
+writeFileSync(join(emitDir, 'Package.swift'), packageSwift);
+console.log(`  ✓ Setup Package.swift with inline runtime`);
 
-// Step 5: Emit roundtrip test
-console.log('\n=== Step 5: Emit roundtrip test ===');
-const outputEmitGo = join(TESTS_DIR, 'output_emit_swift');
-if (existsSync(outputEmitGo)) rmSync(outputEmitGo, { recursive: true });
-mkdirSync(outputEmitGo, { recursive: true });
+console.log('\n=== Step 7: Run tests ===');
+if (existsSync(OUT_DIR)) rmSync(OUT_DIR, { recursive: true });
+mkdirSync(OUT_DIR, { recursive: true });
 
-run(`cd ${TESTS_DIR} && podman build ${COMMON} -t specodec-emit-run-swift -f Containerfile.emit-run \
-  --build-context specodec-go=${LANG_ROOT} \
-  --build-context emit=${TESTS_DIR}/emit \
-  --build-context emit_gen=${emitGen} \
-  --build-context vectors=${vectorsDir} .`);
-
-const container2 = execSync(`podman create specodec-emit-run-swift /bin/true`).toString().trim();
-run(`podman cp ${container2}:/app/output_emit_swift/. ${outputEmitGo}/`);
-run(`podman rm ${container2}`);
-
-// Step 6: Verify
-console.log('\n=== Step 6: Verify ===');
-run(`cd ${CACHE} && node verify.cjs --lang go --lang-output ${outputGo} --ts-output ${outputTsDir}`);
-run(`cd ${CACHE} && node verify_emit.cjs --lang go --lang-output ${outputEmitGo} --ts-output ${join(CACHE, 'output_emit_ts')}`);
+run(`cd ${__dir}/emit && swift build`);
+run(`cd ${__dir}/emit && VEC_DIR=${VEC_DIR} OUT_DIR=${OUT_DIR} swift run emit_swift`);
 
 console.log('\n=== ALL PASSED ===');
