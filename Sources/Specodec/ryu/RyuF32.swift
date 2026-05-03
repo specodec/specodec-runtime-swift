@@ -69,11 +69,11 @@ func float32ToString(_ f: Float32) -> String {
         
         if q <= 9 {
             if mv % 5 == 0 {
-                vrIsTrailingZeros = multipleOfPowerOf5_64(value: mv, q: q)
+                vrIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mv), q: q)
             } else if acceptBounds {
-                vmIsTrailingZeros = multipleOfPowerOf5_64(value: mm, q: q)
+                vmIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mm), q: q)
             } else {
-                if multipleOfPowerOf5_64(value: mp, q: q) {
+                if multipleOfPowerOf5_32(value: UInt32(mp), q: q) {
                     vp -= 1
                 }
             }
@@ -102,11 +102,11 @@ func float32ToString(_ f: Float32) -> String {
                 vp -= 1
             }
         } else if q < 31 {
-            vrIsTrailingZeros = multipleOfPowerOf2_64(value: mv, q: q - 1)
+            vrIsTrailingZeros = multipleOfPowerOf2_32(value: UInt32(mv), q: q - 1)
             if acceptBounds {
-                vmIsTrailingZeros = multipleOfPowerOf5_64(value: mm, q: q)
+                vmIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mm), q: q)
             } else {
-                if multipleOfPowerOf5_64(value: mp, q: q) {
+                if multipleOfPowerOf5_32(value: UInt32(mp), q: q) {
                     vp -= 1
                 }
             }

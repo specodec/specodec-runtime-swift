@@ -92,3 +92,31 @@ func multipleOfPowerOf2_64(value: UInt64, q: Int32) -> Bool {
     let qInt = Int(q)
     return (value & ((1 << qInt) - 1)) == 0
 }
+func decimalLength9(v: UInt32) -> Int32 {
+    if v >= 100000000 { return 9 }
+    if v >= 10000000 { return 8 }
+    if v >= 1000000 { return 7 }
+    if v >= 100000 { return 6 }
+    if v >= 10000 { return 5 }
+    if v >= 1000 { return 4 }
+    if v >= 100 { return 3 }
+    if v >= 10 { return 2 }
+    return 1
+}
+
+func multipleOfPowerOf5_32(value: UInt32, q: Int32) -> Bool {
+    if q == 0 { return true }
+    if q >= 32 { return value == 0 }
+    var pow5: UInt32 = 1
+    let qInt = Int(q)
+    for _ in 0..<qInt {
+        pow5 = pow5 &* 5
+    }
+    return (value % pow5) == 0
+}
+
+func multipleOfPowerOf2_32(value: UInt32, q: Int32) -> Bool {
+    if q == 0 { return true }
+    if q >= 32 { return value == 0 }
+    return (value & ((1 << q) - 1)) == 0
+}
