@@ -1,8 +1,8 @@
 // Float64 configuration constants
-private let DOUBLE_MANTISSA_BITS = 52
-private let DOUBLE_BIAS = 1023
-private let DOUBLE_POW5_INV_BITCOUNT = 125
-private let DOUBLE_POW5_BITCOUNT = 125
+private let DOUBLE_MANTISSA_BITS: Int32 = 52
+private let DOUBLE_BIAS: Int32 = 1023
+private let DOUBLE_POW5_INV_BITCOUNT: Int32 = 125
+private let DOUBLE_POW5_BITCOUNT: Int32 = 125
 
 import Foundation
 
