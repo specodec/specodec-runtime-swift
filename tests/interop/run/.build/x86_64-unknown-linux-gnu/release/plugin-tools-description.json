@@ -1,0 +1,470 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.Specodec-x86_64-unknown-linux-gnu-release.module" : {
+      "executable" : "/usr/bin/swiftc",
+      "fileList" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/sources",
+      "importPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/GronReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/GronWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/JsonReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/JsonWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/MsgPackReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/MsgPackWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/SpecCodec.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/SpecReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/swift-version-24593BA9C3E375BF.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "Specodec",
+      "moduleOutputPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules/Specodec.swiftmodule",
+      "objects" : [
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronReader.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronWriter.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonReader.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonWriter.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackReader.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackWriter.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecCodec.swift.o",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecReader.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-whole-module-optimization",
+        "-num-threads",
+        "128",
+        "-serialize-diagnostics",
+        "-O",
+        "-j128",
+        "-DSWIFT_PACKAGE",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/include/Specodec-Swift.h",
+        "-swift-version",
+        "5",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "specodec_swift",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecCodec.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules/Specodec.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/app/specodec-swift/Sources/Specodec/GronReader.swift",
+        "/app/specodec-swift/Sources/Specodec/GronWriter.swift",
+        "/app/specodec-swift/Sources/Specodec/JsonReader.swift",
+        "/app/specodec-swift/Sources/Specodec/JsonWriter.swift",
+        "/app/specodec-swift/Sources/Specodec/MsgPackReader.swift",
+        "/app/specodec-swift/Sources/Specodec/MsgPackWriter.swift",
+        "/app/specodec-swift/Sources/Specodec/SpecCodec.swift",
+        "/app/specodec-swift/Sources/Specodec/SpecReader.swift"
+      ],
+      "tempsPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build",
+      "wholeModuleOptimization" : true
+    },
+    "C.run_swift-x86_64-unknown-linux-gnu-release.module" : {
+      "executable" : "/usr/bin/swiftc",
+      "fileList" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/sources",
+      "importPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/Sources/run_swift/main.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/swift-version-24593BA9C3E375BF.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules/Specodec.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "run_swift",
+      "moduleOutputPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules/run_swift.swiftmodule",
+      "objects" : [
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/main.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-whole-module-optimization",
+        "-num-threads",
+        "128",
+        "-serialize-diagnostics",
+        "-O",
+        "-j128",
+        "-DSWIFT_PACKAGE",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "run_swift_main",
+        "-swift-version",
+        "5",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "run_swift",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/main.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules/run_swift.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/app/tests/interop/run_swift/Sources/run_swift/main.swift"
+      ],
+      "tempsPath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build",
+      "wholeModuleOptimization" : true
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "Specodec" : [
+      "/usr/bin/swiftc",
+      "-module-name",
+      "Specodec",
+      "-package-name",
+      "specodec_swift",
+      "-c",
+      "/app/specodec-swift/Sources/Specodec/GronReader.swift",
+      "/app/specodec-swift/Sources/Specodec/GronWriter.swift",
+      "/app/specodec-swift/Sources/Specodec/JsonReader.swift",
+      "/app/specodec-swift/Sources/Specodec/JsonWriter.swift",
+      "/app/specodec-swift/Sources/Specodec/MsgPackReader.swift",
+      "/app/specodec-swift/Sources/Specodec/MsgPackWriter.swift",
+      "/app/specodec-swift/Sources/Specodec/SpecCodec.swift",
+      "/app/specodec-swift/Sources/Specodec/SpecReader.swift",
+      "-I",
+      "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-whole-module-optimization",
+      "-num-threads",
+      "128",
+      "-serialize-diagnostics",
+      "-O",
+      "-j128",
+      "-DSWIFT_PACKAGE",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/include/Specodec-Swift.h",
+      "-swift-version",
+      "5",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "specodec_swift",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/bin/swiftc"
+    ],
+    "run_swift" : [
+      "/usr/bin/swiftc",
+      "-module-name",
+      "run_swift",
+      "-package-name",
+      "run_swift",
+      "-c",
+      "/app/tests/interop/run_swift/Sources/run_swift/main.swift",
+      "-I",
+      "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-whole-module-optimization",
+      "-num-threads",
+      "128",
+      "-serialize-diagnostics",
+      "-O",
+      "-j128",
+      "-DSWIFT_PACKAGE",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "run_swift_main",
+      "-swift-version",
+      "5",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "run_swift",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "Specodec" : [
+
+    ],
+    "run_swift" : [
+      "Specodec"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/GronReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/GronWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/JsonReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/JsonWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/MsgPackReader.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/MsgPackWriter.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/SpecCodec.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/specodec-swift/Sources/Specodec/SpecReader.swift"
+        }
+      ],
+      "outputFilePath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/sources"
+    },
+    "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/Sources/run_swift/main.swift"
+        }
+      ],
+      "outputFilePath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/sources"
+    },
+    "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/GronWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/JsonWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/MsgPackWriter.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecCodec.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/SpecReader.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.build/main.swift.o"
+        }
+      ],
+      "outputFilePath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/run_swift.product/Objects.LinkFileList"
+    },
+    "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/swift-version-24593BA9C3E375BF.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/swift-version-24593BA9C3E375BF.txt"
+    }
+  }
+}

@@ -1,0 +1,3 @@
+module Specodec {
+    header "/app/tests/interop/run_swift/.build/x86_64-unknown-linux-gnu/release/Specodec.build/include/Specodec-Swift.h"
+}

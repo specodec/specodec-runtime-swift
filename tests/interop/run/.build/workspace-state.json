@@ -1,0 +1,27 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "specodec-swift",
+          "kind" : "fileSystem",
+          "location" : "/app/specodec-swift",
+          "name" : "specodec-swift"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/app/specodec-swift"
+        },
+        "subpath" : "specodec-swift"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

@@ -1,0 +1,8 @@
+/app/specodec-swift/Sources/Specodec/GronReader.swift
+/app/specodec-swift/Sources/Specodec/GronWriter.swift
+/app/specodec-swift/Sources/Specodec/JsonReader.swift
+/app/specodec-swift/Sources/Specodec/JsonWriter.swift
+/app/specodec-swift/Sources/Specodec/MsgPackReader.swift
+/app/specodec-swift/Sources/Specodec/MsgPackWriter.swift
+/app/specodec-swift/Sources/Specodec/SpecCodec.swift
+/app/specodec-swift/Sources/Specodec/SpecReader.swift
