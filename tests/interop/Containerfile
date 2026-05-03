@@ -3,7 +3,7 @@ WORKDIR /app
 ARG HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy
 ENV http_proxy=${HTTP_PROXY} https_proxy=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} HTTPS_PROXY=${HTTPS_PROXY} ALL_PROXY=${ALL_PROXY}
 COPY --from=run Package.swift ./
-COPY --from=specodec-swift . /specodec-swift/
+COPY --from=specodec-runtime-swift . /specodec-swift/
 COPY --from=run Sources/ Sources/
 COPY --from=vectors . /app/vectors/
 COPY --from=output_ts . /app/output_ts/

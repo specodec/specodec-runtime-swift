@@ -4,7 +4,7 @@ ARG HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy
 ENV http_proxy=${HTTP_PROXY} https_proxy=${HTTPS_PROXY} HTTP_PROXY=${HTTP_PROXY} HTTPS_PROXY=${HTTPS_PROXY} ALL_PROXY=${ALL_PROXY}
 
 COPY --from=emit_swift_src Package.swift ./
-COPY --from=specodec-swift . /specodec-swift/
+COPY --from=specodec-runtime-swift . /specodec-swift/
 RUN mkdir -p Sources/run_swift
 COPY --from=emit_gen TestServiceTypes.swift Sources/run_swift/
 RUN printf 'import Specodec\nimport Foundation\n\nlet _ = InnerCodec.self\nlet _ = SingleInt8Codec.self\nlet _ = EdgeBigNumsCodec.self\nprint("ok")\n' > Sources/run_swift/main.swift
