@@ -1,3 +1,5 @@
+import Foundation
+
 var FLOAT_POW5_INV_SPLIT: [UInt64] = [
     UInt64(576460752303423489),
     UInt64(461168601842738791),

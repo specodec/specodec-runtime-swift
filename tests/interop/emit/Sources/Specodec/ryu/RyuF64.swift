@@ -4,7 +4,9 @@ private let DOUBLE_BIAS: Int32 = 1023
 private let DOUBLE_POW5_INV_BITCOUNT: Int32 = 125
 private let DOUBLE_POW5_BITCOUNT: Int32 = 125
 
-public func float64ToString(_ d: Float64) -> String {
+import Foundation
+
+func float64ToString(_ d: Float64) -> String {
     let bits = d.bitPattern
     
     let sign = (bits >> 63) != 0

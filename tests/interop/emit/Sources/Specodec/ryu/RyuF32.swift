@@ -1,17 +1,19 @@
-// Float64 configuration constants
-private let DOUBLE_MANTISSA_BITS: Int32 = 52
-private let DOUBLE_BIAS: Int32 = 1023
-private let DOUBLE_POW5_INV_BITCOUNT: Int32 = 125
-private let DOUBLE_POW5_BITCOUNT: Int32 = 125
+// Float32 configuration constants
+private let FLOAT_MANTISSA_BITS: Int32 = 23
+private let FLOAT_BIAS: Int32 = 127
+private let FLOAT_POW5_INV_BITCOUNT: Int32 = 59
+private let FLOAT_POW5_BITCOUNT: Int32 = 61
 
-public func float64ToString(_ d: Float64) -> String {
-    let bits = d.bitPattern
+import Foundation
+
+func float32ToString(_ f: Float32) -> String {
+    let bits = f.bitPattern
     
-    let sign = (bits >> 63) != 0
-    let ieeeMantissa = bits & 0xFFFFFFFFFFFFF
-    let ieeeExponent = Int32((bits >> 52) & 0x7FF)
+    let sign = (bits >> 31) != 0
+    let ieeeMantissa = bits & 0x7FFFFF
+    let ieeeExponent = (bits >> 23) & 0xFF
     
-    if ieeeExponent == 2047 {
+    if ieeeExponent == 255 {
         if ieeeMantissa == 0 {
             return sign ? "-Infinity" : "Infinity"
         }
@@ -24,11 +26,11 @@ public func float64ToString(_ d: Float64) -> String {
     var e2: Int32
     var m2: UInt64
     if ieeeExponent == 0 {
-        e2 = 1 - DOUBLE_BIAS - DOUBLE_MANTISSA_BITS - 2
-        m2 = ieeeMantissa
+        e2 = 1 - FLOAT_BIAS - FLOAT_MANTISSA_BITS - 2
+        m2 = UInt64(ieeeMantissa)
     } else {
-        e2 = ieeeExponent - DOUBLE_BIAS - DOUBLE_MANTISSA_BITS - 2
-        m2 = (1 << DOUBLE_MANTISSA_BITS) | ieeeMantissa
+        e2 = Int32(ieeeExponent) - FLOAT_BIAS - FLOAT_MANTISSA_BITS - 2
+        m2 = UInt64((1 << FLOAT_MANTISSA_BITS) | ieeeMantissa)
     }
     
     let even = (m2 & 1) == 0
@@ -36,11 +38,11 @@ public func float64ToString(_ d: Float64) -> String {
     
     let mv = m2 * 4
     let mp = mv + 2
-    var mmShift: UInt64 = 0
+    var mmShift: Int32 = 0
     if ieeeMantissa != 0 || ieeeExponent <= 1 {
         mmShift = 1
     }
-    let mm = mv - 1 - mmShift
+    let mm = mv - 1 - UInt64(mmShift)
     
     var vrIsTrailingZeros = false
     var vmIsTrailingZeros = false
@@ -53,25 +55,25 @@ public func float64ToString(_ d: Float64) -> String {
     if e2 >= 0 {
         let q = log10Pow2(e: e2)
         e10 = q
-        let k = DOUBLE_POW5_INV_BITCOUNT + pow5bits(e: q) - 1
+        let k = FLOAT_POW5_INV_BITCOUNT + pow5bits(e: q) - 1
         let i = -e2 + q + k
         
-        vr = mulShift64(m: mv, mul: DOUBLE_POW5_INV_SPLIT[Int(q)], shift: i)
-        vp = mulShift64(m: mp, mul: DOUBLE_POW5_INV_SPLIT[Int(q)], shift: i)
-        vm = mulShift64(m: mm, mul: DOUBLE_POW5_INV_SPLIT[Int(q)], shift: i)
+        vr = mulShift32(m: mv, factor: FLOAT_POW5_INV_SPLIT[Int(q)] + 1, shift: i)
+        vp = mulShift32(m: mp, factor: FLOAT_POW5_INV_SPLIT[Int(q)] + 1, shift: i)
+        vm = mulShift32(m: mm, factor: FLOAT_POW5_INV_SPLIT[Int(q)] + 1, shift: i)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let l = DOUBLE_POW5_INV_BITCOUNT + pow5bits(e: q - 1) - 1
-            lastDigit = mulShift64(m: mv, mul: DOUBLE_POW5_INV_SPLIT[Int(q - 1)], shift: -e2 + q - 1 + l) % 10
+            let l = FLOAT_POW5_INV_BITCOUNT + pow5bits(e: q - 1) - 1
+            lastDigit = mulShift32(m: mv, factor: FLOAT_POW5_INV_SPLIT[Int(q - 1)] + 1, shift: -e2 + q - 1 + l) % 10
         }
         
-        if q <= 21 {
+        if q <= 9 {
             if mv % 5 == 0 {
-                vrIsTrailingZeros = multipleOfPowerOf5_64(value: mv, q: q)
+                vrIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mv), q: q)
             } else if acceptBounds {
-                vmIsTrailingZeros = multipleOfPowerOf5_64(value: mm, q: q)
+                vmIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mm), q: q)
             } else {
-                if multipleOfPowerOf5_64(value: mp, q: q) {
+                if multipleOfPowerOf5_32(value: UInt32(mp), q: q) {
                     vp -= 1
                 }
             }
@@ -80,22 +82,16 @@ public func float64ToString(_ d: Float64) -> String {
         let q = log10Pow5(e: -e2)
         e10 = q + e2
         let i = -e2 - q
-        let k = pow5bits(e: i) - DOUBLE_POW5_BITCOUNT
+        let k = pow5bits(e: i) - FLOAT_POW5_BITCOUNT
         let j = q - k
         
-        // Bounds check
-        if Int(i) >= DOUBLE_POW5_SPLIT.count {
-            print("ERROR: i=\(i) >= DOUBLE_POW5_SPLIT.count=\(DOUBLE_POW5_SPLIT.count), e2=\(e2)")
-            return "ERROR"
-        }
-        
-        vr = mulShift64(m: mv, mul: DOUBLE_POW5_SPLIT[Int(i)], shift: j)
-        vp = mulShift64(m: mp, mul: DOUBLE_POW5_SPLIT[Int(i)], shift: j)
-        vm = mulShift64(m: mm, mul: DOUBLE_POW5_SPLIT[Int(i)], shift: j)
+        vr = mulShift32(m: mv, factor: FLOAT_POW5_SPLIT[Int(i)], shift: j)
+        vp = mulShift32(m: mp, factor: FLOAT_POW5_SPLIT[Int(i)], shift: j)
+        vm = mulShift32(m: mm, factor: FLOAT_POW5_SPLIT[Int(i)], shift: j)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let j2 = q - 1 - (pow5bits(e: i + 1) - DOUBLE_POW5_BITCOUNT)
-            lastDigit = mulShift64(m: mv, mul: DOUBLE_POW5_SPLIT[Int(i + 1)], shift: j2) % 10
+            let j2 = q - 1 - (pow5bits(e: i + 1) - FLOAT_POW5_BITCOUNT)
+            lastDigit = mulShift32(m: mv, factor: FLOAT_POW5_SPLIT[Int(i + 1)], shift: j2) % 10
         }
         
         if q <= 1 {
@@ -105,12 +101,12 @@ public func float64ToString(_ d: Float64) -> String {
             } else {
                 vp -= 1
             }
-        } else if q < 63 {
-            vrIsTrailingZeros = multipleOfPowerOf2_64(value: mv, q: q - 1)
+        } else if q < 31 {
+            vrIsTrailingZeros = multipleOfPowerOf2_32(value: UInt32(mv), q: q - 1)
             if acceptBounds {
-                vmIsTrailingZeros = multipleOfPowerOf5_64(value: mm, q: q)
+                vmIsTrailingZeros = multipleOfPowerOf5_32(value: UInt32(mm), q: q)
             } else {
-                if multipleOfPowerOf5_64(value: mp, q: q) {
+                if multipleOfPowerOf5_32(value: UInt32(mp), q: q) {
                     vp -= 1
                 }
             }

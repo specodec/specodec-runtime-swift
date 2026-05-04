@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "specodec-swift",
+    name: "specodec-runtime-swift",
     products: [
         .library(name: "Specodec", targets: ["Specodec"]),
     ],

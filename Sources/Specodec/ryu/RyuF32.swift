@@ -4,9 +4,7 @@ private let FLOAT_BIAS: Int32 = 127
 private let FLOAT_POW5_INV_BITCOUNT: Int32 = 59
 private let FLOAT_POW5_BITCOUNT: Int32 = 61
 
-import Foundation
-
-func float32ToString(_ f: Float32) -> String {
+public func float32ToString(_ f: Float32) -> String {
     let bits = f.bitPattern
     
     let sign = (bits >> 31) != 0
