@@ -1,5 +1,3 @@
-import Foundation
-
 func pow5bits(e: Int32) -> Int32 {
     return e * 1217359 / 524288 + 1
 }
