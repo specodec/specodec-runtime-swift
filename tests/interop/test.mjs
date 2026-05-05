@@ -66,6 +66,11 @@ for (const f of readdirSync(join(emitDir, 'emit_gen')).filter(f => f.endsWith('.
   copyFileSync(join(emitDir, 'emit_gen', f), join(emitMainDir, f));
 }
 
+// Copy generated test files from Sources/ into EmitMain/
+for (const f of readdirSync(join(emitDir, 'Sources')).filter(f => f.endsWith('.swift') && f !== 'main.swift')) {
+  copyFileSync(join(emitDir, 'Sources', f), join(emitMainDir, f));
+}
+
 // Copy runtime Specodec sources
 const runtimeSpecodec = join(__dir, '..', '..', 'Sources', 'Specodec');
 for (const f of readdirSync(runtimeSpecodec).filter(f => f.endsWith('.swift'))) {
