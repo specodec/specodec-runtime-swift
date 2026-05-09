@@ -14,14 +14,14 @@ public struct DeepModel {
     }
 }
 
-private func writeDeepModel(_ w: any SpecWriter, _ obj: DeepModel) {
+public func writeDeepModel(_ w: any SpecWriter, _ obj: DeepModel) {
     w.beginObject(2)
     w.writeField("payload"); w.writeBytes(obj.payload)
     w.writeField("count"); w.writeInt64(obj.count)
     w.endObject()
 }
 
-private func decodeDeepModel(_ r: any SpecReader) throws -> DeepModel {
+public func decodeDeepModel(_ r: any SpecReader) throws -> DeepModel {
     var payload: Data = Data()
     var count: Int64 = 0
     try r.beginObject()

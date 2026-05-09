@@ -8,8 +8,11 @@ const VEC_DIR = process.env.VEC_DIR;
 const manifest = JSON.parse(readFileSync(join(VEC_DIR, 'manifest.json'), 'utf8'));
 
 const scalars = manifest.scalars || {};
-const testModels = manifest.testModels || [];
+const testModels = [...(manifest.testModels || []), ...(manifest.testUnions || [])];
 const modelNamespaces = manifest.modelNamespaces || {};
+const testUnions = new Set(manifest.testUnions || []);
+function isUnionTest(name) { return testUnions.has(name); }
+function unionNameOf(testName) { return testName.replace(/_[^_]+$/, ''); }
 
 const emitGenDir = join(__dir, 'emit', 'emit_gen');
 
@@ -48,6 +51,13 @@ if (existsSync(emitGenDir)) {
       if (content.includes('let ' + model + 'Codec')) {
         const key = f.replace(/_types\.swift$/, '');
         modelFileGroup[model] = key;
+      }
+      if (isUnionTest(model)) {
+        const uname = unionNameOf(model);
+        if (content.includes('let ' + uname + 'Codec')) {
+          const key = f.replace(/_types\.swift$/, '');
+          modelFileGroup[model] = key;
+        }
       }
     }
   }
@@ -114,6 +124,7 @@ function genScalarFunc(name, spec) {
 // ── Model test function ──
 function genModelFunc(model) {
   const funcName = `testModel_${model.replace(/[^a-zA-Z0-9_]/g, '_')}`;
+  const codecName = isUnionTest(model) ? unionNameOf(model) : model;
 
   let body = '';
   body += `func ${funcName}() -> (Bool, Bool, Bool, Bool) {\n`;
@@ -124,9 +135,9 @@ function genModelFunc(model) {
   body += `    do {\n`;
   body += `        let data = try Data(contentsOf: URL(fileURLWithPath: vecDir + "/${model}.msgpack"))\n`;
   body += `        var r = MsgPackReader(data)\n`;
-  body += `        let obj = try ${model}Codec.decode(r)\n`;
+  body += `        let obj = try ${codecName}Codec.decode(r)\n`;
   body += `        var w = MsgPackWriter()\n`;
-  body += `        ${model}Codec.encode(w, obj)\n`;
+  body += `        ${codecName}Codec.encode(w, obj)\n`;
   body += `        let out = w.toBytes()\n`;
   body += `        try out.write(to: URL(fileURLWithPath: outDir + "/${model}.msgpack"))\n`;
   body += `        mpOk = true\n`;
@@ -139,9 +150,9 @@ function genModelFunc(model) {
   body += `    do {\n`;
   body += `        let data = try Data(contentsOf: URL(fileURLWithPath: vecDir + "/${model}.json"))\n`;
   body += `        var r = JsonReader(data)\n`;
-  body += `        let obj = try ${model}Codec.decode(r)\n`;
+  body += `        let obj = try ${codecName}Codec.decode(r)\n`;
   body += `        var w = JsonWriter()\n`;
-  body += `        ${model}Codec.encode(w, obj)\n`;
+  body += `        ${codecName}Codec.encode(w, obj)\n`;
   body += `        let out = w.toBytes()\n`;
   body += `        try out.write(to: URL(fileURLWithPath: outDir + "/${model}.json"))\n`;
   body += `        jsonOk = true\n`;
@@ -154,9 +165,9 @@ function genModelFunc(model) {
   body += `    do {\n`;
   body += `        let data = try Data(contentsOf: URL(fileURLWithPath: vecDir + "/${model}.unformatted.json"))\n`;
   body += `        var r = JsonReader(data)\n`;
-  body += `        let obj = try ${model}Codec.decode(r)\n`;
+  body += `        let obj = try ${codecName}Codec.decode(r)\n`;
   body += `        var w = JsonWriter()\n`;
-  body += `        ${model}Codec.encode(w, obj)\n`;
+  body += `        ${codecName}Codec.encode(w, obj)\n`;
   body += `        let out = w.toBytes()\n`;
   body += `        try out.write(to: URL(fileURLWithPath: outDir + "/${model}.unformatted.json"))\n`;
   body += `        jsonPrettyOk = true\n`;
@@ -169,9 +180,9 @@ function genModelFunc(model) {
   body += `    do {\n`;
   body += `        let data = try Data(contentsOf: URL(fileURLWithPath: vecDir + "/${model}.gron"))\n`;
   body += `        var r = GronReader(data)\n`;
-  body += `        let obj = try ${model}Codec.decode(r)\n`;
+  body += `        let obj = try ${codecName}Codec.decode(r)\n`;
   body += `        var w = GronWriter()\n`;
-  body += `        ${model}Codec.encode(w, obj)\n`;
+  body += `        ${codecName}Codec.encode(w, obj)\n`;
   body += `        let out = w.toBytes()\n`;
   body += `        try out.write(to: URL(fileURLWithPath: outDir + "/${model}.gron"))\n`;
   body += `        gronOk = true\n`;

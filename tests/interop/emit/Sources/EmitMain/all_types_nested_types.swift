@@ -14,14 +14,14 @@ public struct NestedSimple {
     }
 }
 
-private func writeNestedSimple(_ w: any SpecWriter, _ obj: NestedSimple) {
+public func writeNestedSimple(_ w: any SpecWriter, _ obj: NestedSimple) {
     w.beginObject(2)
     w.writeField("name"); w.writeString(obj.name)
     w.writeField("value"); w.writeInt32(obj.value)
     w.endObject()
 }
 
-private func decodeNestedSimple(_ r: any SpecReader) throws -> NestedSimple {
+public func decodeNestedSimple(_ r: any SpecReader) throws -> NestedSimple {
     var name: String = ""
     var value: Int32 = 0
     try r.beginObject()
