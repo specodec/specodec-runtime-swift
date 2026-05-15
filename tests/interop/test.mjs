@@ -71,8 +71,11 @@ for (const f of readdirSync(join(emitDir, 'Sources')).filter(f => f.endsWith('.s
   copyFileSync(join(emitDir, 'Sources', f), join(emitMainDir, f));
 }
 
-// Copy runtime Specodec sources
-const runtimeSpecodec = join(__dir, '..', '..', 'Sources', 'Specodec');
+// Fetch runtime from Forgejo generic registry
+const swiftTarUrl = "http://10.199.64.20:3000/api/packages/specodec/generic/specodec-runtime-swift/1.0.0/specodec-swift.tar.gz";
+run(`curl -sfL -o /tmp/specodec-swift.tar.gz "${swiftTarUrl}"`);
+run(`mkdir -p /tmp/specodec-swift-src && tar xzf /tmp/specodec-swift.tar.gz -C /tmp/specodec-swift-src`);
+const runtimeSpecodec = "/tmp/specodec-swift-src/Sources/Specodec";
 for (const f of readdirSync(runtimeSpecodec).filter(f => f.endsWith('.swift'))) {
   copyFileSync(join(runtimeSpecodec, f), join(specodecSrcDir, f));
 }

@@ -15,8 +15,8 @@ public func writeUnionFieldHolder(_ w: any SpecWriter, _ obj: UnionFieldHolder) 
 }
 
 public func decodeUnionFieldHolder(_ r: any SpecReader) throws -> UnionFieldHolder {
-    var shape: Shape!
-    var id: Ident!
+    var shape: Shape = .ShapeUndefined(.instance)
+    var id: Ident = .IdentUndefined(.instance)
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
@@ -124,8 +124,8 @@ public func writeUnionMixedHolder(_ w: any SpecWriter, _ obj: UnionMixedHolder) 
 }
 
 public func decodeUnionMixedHolder(_ r: any SpecReader) throws -> UnionMixedHolder {
-    var result: ResultMsg!
-    var tag: Tagged!
+    var result: ResultMsg = .ResultMsgUndefined(.instance)
+    var tag: Tagged = .TaggedUndefined(.instance)
     var count: Int32 = 0
     try r.beginObject()
     while try r.hasNextField() {
@@ -160,8 +160,8 @@ public func writeUnionScalarHolder(_ w: any SpecWriter, _ obj: UnionScalarHolder
 }
 
 public func decodeUnionScalarHolder(_ r: any SpecReader) throws -> UnionScalarHolder {
-    var id: Ident!
-    var sc: ScalarUnion!
+    var id: Ident = .IdentUndefined(.instance)
+    var sc: ScalarUnion = .ScalarUnionUndefined(.instance)
     var label: String = ""
     try r.beginObject()
     while try r.hasNextField() {
@@ -182,15 +182,17 @@ public let UnionScalarHolderCodec = SpecCodec<UnionScalarHolder>(
 )
 
 public enum Shape {
-    case circle(Coord)
-    case rect(Range32)
+    case ShapeCircle(Coord)
+    case ShapeRect(Range32)
+    case ShapeUndefined(SpecUndefined)
 }
 
 public func writeShape(_ w: any SpecWriter, _ obj: Shape) {
     w.beginObject(1)
     switch obj {
-    case .circle(let v): w.writeField("circle"); writeCoord(w, v)
-    case .rect(let v): w.writeField("rect"); writeRange32(w, v)
+    case .ShapeCircle(let v): w.writeField("circle"); writeCoord(w, v)
+    case .ShapeRect(let v): w.writeField("rect"); writeRange32(w, v)
+    case .ShapeUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -199,10 +201,10 @@ public func decodeShape(_ r: any SpecReader) throws -> Shape {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: Shape
+    var result: Shape = .ShapeUndefined(.instance)
     switch field {
-    case "circle": result = .circle(try decodeCoord(r))
-    case "rect": result = .rect(try decodeRange32(r))
+    case "circle": result = .ShapeCircle(try decodeCoord(r))
+    case "rect": result = .ShapeRect(try decodeRange32(r))
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -214,17 +216,18 @@ public let ShapeCodec = SpecCodec<Shape>(
     encode: { w, obj in writeShape(w, obj) },
     decode: { r throws in try decodeShape(r) }
 )
-
 public enum Ident {
-    case name(String)
-    case number(Int32)
+    case IdentName(String)
+    case IdentNumber(Int32)
+    case IdentUndefined(SpecUndefined)
 }
 
 public func writeIdent(_ w: any SpecWriter, _ obj: Ident) {
     w.beginObject(1)
     switch obj {
-    case .name(let v): w.writeField("name"); w.writeString(v)
-    case .number(let v): w.writeField("number"); w.writeInt32(v)
+    case .IdentName(let v): w.writeField("name"); w.writeString(v)
+    case .IdentNumber(let v): w.writeField("number"); w.writeInt32(v)
+    case .IdentUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -233,10 +236,10 @@ public func decodeIdent(_ r: any SpecReader) throws -> Ident {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: Ident
+    var result: Ident = .IdentUndefined(.instance)
     switch field {
-    case "name": result = .name(try r.readString())
-    case "number": result = .number(try r.readInt32())
+    case "name": result = .IdentName(try r.readString())
+    case "number": result = .IdentNumber(try r.readInt32())
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -248,17 +251,18 @@ public let IdentCodec = SpecCodec<Ident>(
     encode: { w, obj in writeIdent(w, obj) },
     decode: { r throws in try decodeIdent(r) }
 )
-
 public enum ResultMsg {
-    case ok(String)
-    case err(Label)
+    case ResultMsgOk(String)
+    case ResultMsgErr(Label)
+    case ResultMsgUndefined(SpecUndefined)
 }
 
 public func writeResultMsg(_ w: any SpecWriter, _ obj: ResultMsg) {
     w.beginObject(1)
     switch obj {
-    case .ok(let v): w.writeField("ok"); w.writeString(v)
-    case .err(let v): w.writeField("err"); writeLabel(w, v)
+    case .ResultMsgOk(let v): w.writeField("ok"); w.writeString(v)
+    case .ResultMsgErr(let v): w.writeField("err"); writeLabel(w, v)
+    case .ResultMsgUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -267,10 +271,10 @@ public func decodeResultMsg(_ r: any SpecReader) throws -> ResultMsg {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: ResultMsg
+    var result: ResultMsg = .ResultMsgUndefined(.instance)
     switch field {
-    case "ok": result = .ok(try r.readString())
-    case "err": result = .err(try decodeLabel(r))
+    case "ok": result = .ResultMsgOk(try r.readString())
+    case "err": result = .ResultMsgErr(try decodeLabel(r))
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -282,19 +286,20 @@ public let ResultMsgCodec = SpecCodec<ResultMsg>(
     encode: { w, obj in writeResultMsg(w, obj) },
     decode: { r throws in try decodeResultMsg(r) }
 )
-
 public enum Tagged {
-    case tag(String)
-    case score(Double)
-    case active(Bool)
+    case TaggedTag(String)
+    case TaggedScore(Double)
+    case TaggedActive(Bool)
+    case TaggedUndefined(SpecUndefined)
 }
 
 public func writeTagged(_ w: any SpecWriter, _ obj: Tagged) {
     w.beginObject(1)
     switch obj {
-    case .tag(let v): w.writeField("tag"); w.writeString(v)
-    case .score(let v): w.writeField("score"); w.writeFloat64(v)
-    case .active(let v): w.writeField("active"); w.writeBool(v)
+    case .TaggedTag(let v): w.writeField("tag"); w.writeString(v)
+    case .TaggedScore(let v): w.writeField("score"); w.writeFloat64(v)
+    case .TaggedActive(let v): w.writeField("active"); w.writeBool(v)
+    case .TaggedUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -303,11 +308,11 @@ public func decodeTagged(_ r: any SpecReader) throws -> Tagged {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: Tagged
+    var result: Tagged = .TaggedUndefined(.instance)
     switch field {
-    case "tag": result = .tag(try r.readString())
-    case "score": result = .score(try r.readFloat64())
-    case "active": result = .active(try r.readBool())
+    case "tag": result = .TaggedTag(try r.readString())
+    case "score": result = .TaggedScore(try r.readFloat64())
+    case "active": result = .TaggedActive(try r.readBool())
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -319,21 +324,22 @@ public let TaggedCodec = SpecCodec<Tagged>(
     encode: { w, obj in writeTagged(w, obj) },
     decode: { r throws in try decodeTagged(r) }
 )
-
 public enum ScalarUnion {
-    case s(String)
-    case i(Int32)
-    case f(Double)
-    case b(Bool)
+    case ScalarUnionS(String)
+    case ScalarUnionI(Int32)
+    case ScalarUnionF(Double)
+    case ScalarUnionB(Bool)
+    case ScalarUnionUndefined(SpecUndefined)
 }
 
 public func writeScalarUnion(_ w: any SpecWriter, _ obj: ScalarUnion) {
     w.beginObject(1)
     switch obj {
-    case .s(let v): w.writeField("s"); w.writeString(v)
-    case .i(let v): w.writeField("i"); w.writeInt32(v)
-    case .f(let v): w.writeField("f"); w.writeFloat64(v)
-    case .b(let v): w.writeField("b"); w.writeBool(v)
+    case .ScalarUnionS(let v): w.writeField("s"); w.writeString(v)
+    case .ScalarUnionI(let v): w.writeField("i"); w.writeInt32(v)
+    case .ScalarUnionF(let v): w.writeField("f"); w.writeFloat64(v)
+    case .ScalarUnionB(let v): w.writeField("b"); w.writeBool(v)
+    case .ScalarUnionUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -342,12 +348,12 @@ public func decodeScalarUnion(_ r: any SpecReader) throws -> ScalarUnion {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: ScalarUnion
+    var result: ScalarUnion = .ScalarUnionUndefined(.instance)
     switch field {
-    case "s": result = .s(try r.readString())
-    case "i": result = .i(try r.readInt32())
-    case "f": result = .f(try r.readFloat64())
-    case "b": result = .b(try r.readBool())
+    case "s": result = .ScalarUnionS(try r.readString())
+    case "i": result = .ScalarUnionI(try r.readInt32())
+    case "f": result = .ScalarUnionF(try r.readFloat64())
+    case "b": result = .ScalarUnionB(try r.readBool())
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -359,17 +365,18 @@ public let ScalarUnionCodec = SpecCodec<ScalarUnion>(
     encode: { w, obj in writeScalarUnion(w, obj) },
     decode: { r throws in try decodeScalarUnion(r) }
 )
-
 public enum OptUnionHolder {
-    case shape(Shape)
-    case id(Ident)
+    case OptUnionHolderShape(Shape)
+    case OptUnionHolderId(Ident)
+    case OptUnionHolderUndefined(SpecUndefined)
 }
 
 public func writeOptUnionHolder(_ w: any SpecWriter, _ obj: OptUnionHolder) {
     w.beginObject(1)
     switch obj {
-    case .shape(let v): w.writeField("shape"); writeShape(w, v)
-    case .id(let v): w.writeField("id"); writeIdent(w, v)
+    case .OptUnionHolderShape(let v): w.writeField("shape"); writeShape(w, v)
+    case .OptUnionHolderId(let v): w.writeField("id"); writeIdent(w, v)
+    case .OptUnionHolderUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -378,10 +385,10 @@ public func decodeOptUnionHolder(_ r: any SpecReader) throws -> OptUnionHolder {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: OptUnionHolder
+    var result: OptUnionHolder = .OptUnionHolderUndefined(.instance)
     switch field {
-    case "shape": result = .shape(try decodeShape(r))
-    case "id": result = .id(try decodeIdent(r))
+    case "shape": result = .OptUnionHolderShape(try decodeShape(r))
+    case "id": result = .OptUnionHolderId(try decodeIdent(r))
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -393,19 +400,20 @@ public let OptUnionHolderCodec = SpecCodec<OptUnionHolder>(
     encode: { w, obj in writeOptUnionHolder(w, obj) },
     decode: { r throws in try decodeOptUnionHolder(r) }
 )
-
 public enum MixedUnion {
-    case point(Coord)
-    case label(String)
-    case count(Int32)
+    case MixedUnionPoint(Coord)
+    case MixedUnionLabel(String)
+    case MixedUnionCount(Int32)
+    case MixedUnionUndefined(SpecUndefined)
 }
 
 public func writeMixedUnion(_ w: any SpecWriter, _ obj: MixedUnion) {
     w.beginObject(1)
     switch obj {
-    case .point(let v): w.writeField("point"); writeCoord(w, v)
-    case .label(let v): w.writeField("label"); w.writeString(v)
-    case .count(let v): w.writeField("count"); w.writeInt32(v)
+    case .MixedUnionPoint(let v): w.writeField("point"); writeCoord(w, v)
+    case .MixedUnionLabel(let v): w.writeField("label"); w.writeString(v)
+    case .MixedUnionCount(let v): w.writeField("count"); w.writeInt32(v)
+    case .MixedUnionUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -414,11 +422,11 @@ public func decodeMixedUnion(_ r: any SpecReader) throws -> MixedUnion {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: MixedUnion
+    var result: MixedUnion = .MixedUnionUndefined(.instance)
     switch field {
-    case "point": result = .point(try decodeCoord(r))
-    case "label": result = .label(try r.readString())
-    case "count": result = .count(try r.readInt32())
+    case "point": result = .MixedUnionPoint(try decodeCoord(r))
+    case "label": result = .MixedUnionLabel(try r.readString())
+    case "count": result = .MixedUnionCount(try r.readInt32())
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
@@ -430,17 +438,18 @@ public let MixedUnionCodec = SpecCodec<MixedUnion>(
     encode: { w, obj in writeMixedUnion(w, obj) },
     decode: { r throws in try decodeMixedUnion(r) }
 )
-
 public enum NestedUnion {
-    case result(ResultMsg)
-    case shape(Shape)
+    case NestedUnionResult(ResultMsg)
+    case NestedUnionShape(Shape)
+    case NestedUnionUndefined(SpecUndefined)
 }
 
 public func writeNestedUnion(_ w: any SpecWriter, _ obj: NestedUnion) {
     w.beginObject(1)
     switch obj {
-    case .result(let v): w.writeField("result"); writeResultMsg(w, v)
-    case .shape(let v): w.writeField("shape"); writeShape(w, v)
+    case .NestedUnionResult(let v): w.writeField("result"); writeResultMsg(w, v)
+    case .NestedUnionShape(let v): w.writeField("shape"); writeShape(w, v)
+    case .NestedUnionUndefined: return  // cannot encode undefined variant
     }
     w.endObject()
 }
@@ -449,10 +458,10 @@ public func decodeNestedUnion(_ r: any SpecReader) throws -> NestedUnion {
     try r.beginObject()
     guard try r.hasNextField() else { try r.endObject(); throw SCodecError(code: "unknownField", message: "empty union") }
     let field = try r.readFieldName()
-    let result: NestedUnion
+    var result: NestedUnion = .NestedUnionUndefined(.instance)
     switch field {
-    case "result": result = .result(try decodeResultMsg(r))
-    case "shape": result = .shape(try decodeShape(r))
+    case "result": result = .NestedUnionResult(try decodeResultMsg(r))
+    case "shape": result = .NestedUnionShape(try decodeShape(r))
     default: throw SCodecError(code: "unknownField", message: "unknown variant \(field)")
     }
     while try r.hasNextField() { _ = try r.readFieldName(); try r.skip() }
