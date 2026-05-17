@@ -2,6 +2,9 @@
 import PackageDescription
 let package = Package(
   name: "ryu-test",
-  dependencies: [.package(path: "../..")],
-  targets: [.executableTarget(name: "ryu-test", dependencies: ["Specodec"], path: ".", sources: ["main.swift"])]
+  targets: [.executableTarget(name: "ryu-test", path: ".", sources: [
+    "main.swift", "test_ryu.swift",
+    "RyuF32.swift", "RyuF64.swift", "RyuMath.swift",
+    "TablesF32.swift", "TablesF64.swift"
+  ])]
 )
