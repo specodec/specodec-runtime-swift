@@ -53,7 +53,7 @@ public func float64ToString(_ d: Float64) -> String {
     if e2 >= 0 {
         let q = log10Pow2(e: e2)
         e10 = q
-        let k = DOUBLE_POW5_INV_BITCOUNT + pow5bits(e: q) - 1
+        let k = DOUBLE_POW5_INV_BITCOUNT + pow5Bits(e: q) - 1
         let i = -e2 + q + k
         
         vr = mulShift64(m: mv, mul: DOUBLE_POW5_INV_SPLIT[Int(q)], shift: i)
@@ -61,7 +61,7 @@ public func float64ToString(_ d: Float64) -> String {
         vm = mulShift64(m: mm, mul: DOUBLE_POW5_INV_SPLIT[Int(q)], shift: i)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let l = DOUBLE_POW5_INV_BITCOUNT + pow5bits(e: q - 1) - 1
+            let l = DOUBLE_POW5_INV_BITCOUNT + pow5Bits(e: q - 1) - 1
             lastDigit = mulShift64(m: mv, mul: DOUBLE_POW5_INV_SPLIT[Int(q - 1)], shift: -e2 + q - 1 + l) % 10
         }
         
@@ -80,7 +80,7 @@ public func float64ToString(_ d: Float64) -> String {
         let q = log10Pow5(e: -e2)
         e10 = q + e2
         let i = -e2 - q
-        let k = pow5bits(e: i) - DOUBLE_POW5_BITCOUNT
+        let k = pow5Bits(e: i) - DOUBLE_POW5_BITCOUNT
         let j = q - k
         
         // Bounds check
@@ -94,7 +94,7 @@ public func float64ToString(_ d: Float64) -> String {
         vm = mulShift64(m: mm, mul: DOUBLE_POW5_SPLIT[Int(i)], shift: j)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let j2 = q - 1 - (pow5bits(e: i + 1) - DOUBLE_POW5_BITCOUNT)
+            let j2 = q - 1 - (pow5Bits(e: i + 1) - DOUBLE_POW5_BITCOUNT)
             lastDigit = mulShift64(m: mv, mul: DOUBLE_POW5_SPLIT[Int(i + 1)], shift: j2) % 10
         }
         

@@ -53,7 +53,7 @@ public func float32ToString(_ f: Float32) -> String {
     if e2 >= 0 {
         let q = log10Pow2(e: e2)
         e10 = q
-        let k = FLOAT_POW5_INV_BITCOUNT + pow5bits(e: q) - 1
+        let k = FLOAT_POW5_INV_BITCOUNT + pow5Bits(e: q) - 1
         let i = -e2 + q + k
         
         vr = mulShift32(m: mv, factor: FLOAT_POW5_INV_SPLIT[Int(q)] + 1, shift: i)
@@ -61,7 +61,7 @@ public func float32ToString(_ f: Float32) -> String {
         vm = mulShift32(m: mm, factor: FLOAT_POW5_INV_SPLIT[Int(q)] + 1, shift: i)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let l = FLOAT_POW5_INV_BITCOUNT + pow5bits(e: q - 1) - 1
+            let l = FLOAT_POW5_INV_BITCOUNT + pow5Bits(e: q - 1) - 1
             lastDigit = mulShift32(m: mv, factor: FLOAT_POW5_INV_SPLIT[Int(q - 1)] + 1, shift: -e2 + q - 1 + l) % 10
         }
         
@@ -80,7 +80,7 @@ public func float32ToString(_ f: Float32) -> String {
         let q = log10Pow5(e: -e2)
         e10 = q + e2
         let i = -e2 - q
-        let k = pow5bits(e: i) - FLOAT_POW5_BITCOUNT
+        let k = pow5Bits(e: i) - FLOAT_POW5_BITCOUNT
         let j = q - k
         
         vr = mulShift32(m: mv, factor: FLOAT_POW5_SPLIT[Int(i)], shift: j)
@@ -88,7 +88,7 @@ public func float32ToString(_ f: Float32) -> String {
         vm = mulShift32(m: mm, factor: FLOAT_POW5_SPLIT[Int(i)], shift: j)
         
         if q != 0 && (vp - 1) / 10 <= vm / 10 {
-            let j2 = q - 1 - (pow5bits(e: i + 1) - FLOAT_POW5_BITCOUNT)
+            let j2 = q - 1 - (pow5Bits(e: i + 1) - FLOAT_POW5_BITCOUNT)
             lastDigit = mulShift32(m: mv, factor: FLOAT_POW5_SPLIT[Int(i + 1)], shift: j2) % 10
         }
         
