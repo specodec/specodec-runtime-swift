@@ -66,9 +66,9 @@ func parseCoverageFloat64(_ s: String) -> Float64 {
     return Float64(String(trim(v)))!
 }
 
-@main
-struct RyuTest {
-    static func main() {
+
+
+func main() {
         let dir = currentDir()
         let base = dir.hasSuffix("/") ? dir : dir + "/"
         var passed = 0
@@ -130,4 +130,5 @@ struct RyuTest {
         print("\n=== TOTAL: \(passed)/\(total) ===")
         if failed > 0 { exit(1) }
     }
-}
+
+main()
