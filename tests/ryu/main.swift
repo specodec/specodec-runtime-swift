@@ -42,7 +42,7 @@ func parseFloat32(_ s: String) -> Float32 {
     case "Infinity":     return Float32.infinity
     case "-Infinity":    return -Float32.infinity
     case "-0.0":         return -0.0
-    default:             return Float32(s)!
+    default:             return Float32(s) ?? Float32.nan
     }
 }
 
@@ -52,18 +52,18 @@ func parseFloat64(_ s: String) -> Float64 {
     case "Infinity":     return Float64.infinity
     case "-Infinity":    return -Float64.infinity
     case "-0.0":         return -0.0
-    default:             return Float64(s)!
+    default:             return Float64(s) ?? Float64.nan
     }
 }
 
 func parseCoverageFloat32(_ s: String) -> Float32 {
     let v = s.contains("#") ? s.split(separator: "#")[0] : Substring(s)
-    return Float32(String(trim(v)))!
+    return Float32(String(trim(v))) ?? Float32.nan
 }
 
 func parseCoverageFloat64(_ s: String) -> Float64 {
     let v = s.contains("#") ? s.split(separator: "#")[0] : Substring(s)
-    return Float64(String(trim(v)))!
+    return Float64(String(trim(v))) ?? Float64.nan
 }
 
 
