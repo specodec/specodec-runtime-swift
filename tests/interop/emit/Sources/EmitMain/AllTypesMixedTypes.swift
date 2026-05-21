@@ -23,7 +23,12 @@ public func decodeModelArr1(_ r: any SpecReader) throws -> ModelArr1 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "points": points = try { () throws -> [Inner] in var arr: [Inner] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeInner(r)) }; try r.endArray(); return arr }()
+        case "points":
+            var tmp47: [Inner] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp47.append(try decodeInner(r)) }
+            try r.endArray()
+            points = tmp47
         default: try r.skip()
         }
     }
@@ -57,7 +62,12 @@ public func decodeModelArr2(_ r: any SpecReader) throws -> ModelArr2 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "coords": coords = try { () throws -> [Coord] in var arr: [Coord] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeCoord(r)) }; try r.endArray(); return arr }()
+        case "coords":
+            var tmp48: [Coord] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp48.append(try decodeCoord(r)) }
+            try r.endArray()
+            coords = tmp48
         default: try r.skip()
         }
     }
@@ -95,7 +105,12 @@ public func decodeModelArr3(_ r: any SpecReader) throws -> ModelArr3 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [IdVal] in var arr: [IdVal] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeIdVal(r)) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp49: [IdVal] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp49.append(try decodeIdVal(r)) }
+            try r.endArray()
+            items = tmp49
         case "tag": tag = try r.readString()
         default: try r.skip()
         }
@@ -134,7 +149,12 @@ public func decodeModelArr4(_ r: any SpecReader) throws -> ModelArr4 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "labels": labels = try { () throws -> [Label] in var arr: [Label] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeLabel(r)) }; try r.endArray(); return arr }()
+        case "labels":
+            var tmp50: [Label] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp50.append(try decodeLabel(r)) }
+            try r.endArray()
+            labels = tmp50
         case "count": count = try r.readInt32()
         default: try r.skip()
         }
@@ -173,8 +193,18 @@ public func decodeModelArr5(_ r: any SpecReader) throws -> ModelArr5 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "arr": arr = try { () throws -> [Money] in var arr: [Money] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeMoney(r)) }; try r.endArray(); return arr }()
-        case "bs": bs = try { () throws -> [Addr] in var arr: [Addr] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeAddr(r)) }; try r.endArray(); return arr }()
+        case "arr":
+            var tmp51: [Money] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp51.append(try decodeMoney(r)) }
+            try r.endArray()
+            arr = tmp51
+        case "bs":
+            var tmp52: [Addr] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp52.append(try decodeAddr(r)) }
+            try r.endArray()
+            bs = tmp52
         default: try r.skip()
         }
     }
@@ -262,7 +292,12 @@ public func decodeMix02(_ r: any SpecReader) throws -> Mix02 {
         switch try r.readFieldName() {
         case "id": id = try r.readString()
         case "loc": loc = try decodeCoord(r)
-        case "tags": tags = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "tags":
+            var tmp53: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp53.append(try r.readString()) }
+            try r.endArray()
+            tags = tmp53
         default: try r.skip()
         }
     }
@@ -394,7 +429,12 @@ public func decodeMix05(_ r: any SpecReader) throws -> Mix05 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "addr": addr = try decodeAddr(r)
-        case "coords": coords = try { () throws -> [Coord] in var arr: [Coord] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeCoord(r)) }; try r.endArray(); return arr }()
+        case "coords":
+            var tmp54: [Coord] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp54.append(try decodeCoord(r)) }
+            try r.endArray()
+            coords = tmp54
         default: try r.skip()
         }
     }
@@ -445,7 +485,10 @@ public func decodeMix06(_ r: any SpecReader) throws -> Mix06 {
         switch try r.readFieldName() {
         case "name": name = try r.readString()
         case "age": age = try r.readInt32()
-        case "address": address = try { () throws -> Addr? in if try r.isNull() { try r.readNull(); return nil }; return try decodeAddr(r) }()
+        case "address":
+            var tmp55: Addr? = nil
+            if try r.isNull() { try r.readNull() } else { tmp55 = try decodeAddr(r) }
+            address = tmp55
         case "email": email = try r.readString()
         default: try r.skip()
         }
@@ -534,9 +577,22 @@ public func decodeMix08(_ r: any SpecReader) throws -> Mix08 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "keys": keys = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
-        case "values": values = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
-        case "meta": meta = try { () throws -> Label? in if try r.isNull() { try r.readNull(); return nil }; return try decodeLabel(r) }()
+        case "keys":
+            var tmp56: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp56.append(try r.readString()) }
+            try r.endArray()
+            keys = tmp56
+        case "values":
+            var tmp57: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp57.append(try r.readInt32()) }
+            try r.endArray()
+            values = tmp57
+        case "meta":
+            var tmp58: Label? = nil
+            if try r.isNull() { try r.readNull() } else { tmp58 = try decodeLabel(r) }
+            meta = tmp58
         default: try r.skip()
         }
     }
@@ -587,7 +643,10 @@ public func decodeMix09(_ r: any SpecReader) throws -> Mix09 {
         case "id": id = try r.readInt64()
         case "payload": payload = try r.readBytes()
         case "checksum": checksum = try r.readUint32()
-        case "prev": prev = try { () throws -> IdVal? in if try r.isNull() { try r.readNull(); return nil }; return try decodeIdVal(r) }()
+        case "prev":
+            var tmp59: IdVal? = nil
+            if try r.isNull() { try r.readNull() } else { tmp59 = try decodeIdVal(r) }
+            prev = tmp59
         default: try r.skip()
         }
     }
@@ -633,7 +692,12 @@ public func decodeMix10(_ r: any SpecReader) throws -> Mix10 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp60: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp60.append(try r.readString()) }
+            try r.endArray()
+            items = tmp60
         case "total": total = try r.readInt32()
         case "avg": avg = try r.readFloat64()
         case "value_range": valueRange = try decodeRange32(r)
@@ -686,8 +750,16 @@ public func decodeMix11(_ r: any SpecReader) throws -> Mix11 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "name": name = try r.readString()
-        case "values": values = try { () throws -> [Double] in var arr: [Double] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat64()) }; try r.endArray(); return arr }()
-        case "nested": nested = try { () throws -> Inner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeInner(r) }()
+        case "values":
+            var tmp61: [Double] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp61.append(try r.readFloat64()) }
+            try r.endArray()
+            values = tmp61
+        case "nested":
+            var tmp62: Inner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp62 = try decodeInner(r) }
+            nested = tmp62
         case "flag": flag = try r.readBool()
         default: try r.skip()
         }
@@ -733,7 +805,12 @@ public func decodeMix12(_ r: any SpecReader) throws -> Mix12 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "header": header = try r.readString()
-        case "entries": entries = try { () throws -> [IdVal] in var arr: [IdVal] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeIdVal(r)) }; try r.endArray(); return arr }()
+        case "entries":
+            var tmp63: [IdVal] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp63.append(try decodeIdVal(r)) }
+            try r.endArray()
+            entries = tmp63
         case "footer": footer = try r.readString()
         default: try r.skip()
         }
@@ -835,7 +912,12 @@ public func decodeMix14(_ r: any SpecReader) throws -> Mix14 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "amounts": amounts = try { () throws -> [Money] in var arr: [Money] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeMoney(r)) }; try r.endArray(); return arr }()
+        case "amounts":
+            var tmp64: [Money] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp64.append(try decodeMoney(r)) }
+            try r.endArray()
+            amounts = tmp64
         case "total": total = try r.readInt64()
         case "currency": currency = try r.readString()
         default: try r.skip()
@@ -1137,7 +1219,10 @@ public func decodeAllOpt5(_ r: any SpecReader) throws -> AllOpt5 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "p": p = try { () throws -> Inner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeInner(r) }()
+        case "p":
+            var tmp65: Inner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp65 = try decodeInner(r) }
+            p = tmp65
         case "q": q = try r.readString()
         default: try r.skip()
         }

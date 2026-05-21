@@ -225,8 +225,20 @@ public func decodeEdgeNullable(_ r: any SpecReader) throws -> EdgeNullable {
         switch try r.readFieldName() {
         case "a": a = try r.readString()
         case "b": b = try r.readInt32()
-        case "c": c = try { () throws -> Inner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeInner(r) }()
-        case "d": d = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "c":
+            var tmp20: Inner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp20 = try decodeInner(r) }
+            c = tmp20
+        case "d":
+            var tmp21: [String]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [String] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readString()) }
+                try r.endArray()
+                tmp21 = _arr
+            }
+            d = tmp21
         default: try r.skip()
         }
     }
@@ -490,7 +502,12 @@ public func decodeEdgeArrEmpty(_ r: any SpecReader) throws -> EdgeArrEmpty {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp22: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp22.append(try r.readString()) }
+            try r.endArray()
+            items = tmp22
         default: try r.skip()
         }
     }
@@ -528,8 +545,18 @@ public func decodeEdgeArrBoundary(_ r: any SpecReader) throws -> EdgeArrBoundary
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "a15": a15 = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
-        case "a16": a16 = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
+        case "a15":
+            var tmp23: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp23.append(try r.readInt32()) }
+            try r.endArray()
+            a15 = tmp23
+        case "a16":
+            var tmp24: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp24.append(try r.readInt32()) }
+            try r.endArray()
+            a16 = tmp24
         default: try r.skip()
         }
     }

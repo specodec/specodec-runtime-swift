@@ -61,7 +61,10 @@ public func decodeOptUnionFieldHolder(_ r: any SpecReader) throws -> OptUnionFie
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "shape": shape = try { () throws -> Shape? in if try r.isNull() { try r.readNull(); return nil }; return try decodeShape(r) }()
+        case "shape":
+            var tmp80: Shape? = nil
+            if try r.isNull() { try r.readNull() } else { tmp80 = try decodeShape(r) }
+            shape = tmp80
         case "name": name = try r.readString()
         default: try r.skip()
         }
@@ -96,7 +99,12 @@ public func decodeUnionArrayHolder(_ r: any SpecReader) throws -> UnionArrayHold
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "shapes": shapes = try { () throws -> [Shape] in var arr: [Shape] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeShape(r)) }; try r.endArray(); return arr }()
+        case "shapes":
+            var tmp81: [Shape] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp81.append(try decodeShape(r)) }
+            try r.endArray()
+            shapes = tmp81
         default: try r.skip()
         }
     }

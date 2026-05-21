@@ -23,7 +23,12 @@ public func decodeArrString(_ r: any SpecReader) throws -> ArrString {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp0: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp0.append(try r.readString()) }
+            try r.endArray()
+            items = tmp0
         default: try r.skip()
         }
     }
@@ -57,7 +62,12 @@ public func decodeArrInt32(_ r: any SpecReader) throws -> ArrInt32 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp1: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp1.append(try r.readInt32()) }
+            try r.endArray()
+            items = tmp1
         default: try r.skip()
         }
     }
@@ -91,7 +101,12 @@ public func decodeArrBoolean(_ r: any SpecReader) throws -> ArrBoolean {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [Bool] in var arr: [Bool] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBool()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp2: [Bool] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp2.append(try r.readBool()) }
+            try r.endArray()
+            items = tmp2
         default: try r.skip()
         }
     }
@@ -125,7 +140,12 @@ public func decodeArrFloat64(_ r: any SpecReader) throws -> ArrFloat64 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [Double] in var arr: [Double] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat64()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp3: [Double] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp3.append(try r.readFloat64()) }
+            try r.endArray()
+            items = tmp3
         default: try r.skip()
         }
     }
@@ -159,7 +179,12 @@ public func decodeArrBytes(_ r: any SpecReader) throws -> ArrBytes {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [Data] in var arr: [Data] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBytes()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp4: [Data] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp4.append(try r.readBytes()) }
+            try r.endArray()
+            items = tmp4
         default: try r.skip()
         }
     }
@@ -193,7 +218,12 @@ public func decodeArrInt64(_ r: any SpecReader) throws -> ArrInt64 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [Int64] in var arr: [Int64] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt64()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp5: [Int64] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp5.append(try r.readInt64()) }
+            try r.endArray()
+            items = tmp5
         default: try r.skip()
         }
     }
@@ -227,7 +257,12 @@ public func decodeArrUint64(_ r: any SpecReader) throws -> ArrUint64 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [UInt64] in var arr: [UInt64] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readUint64()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp6: [UInt64] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp6.append(try r.readUint64()) }
+            try r.endArray()
+            items = tmp6
         default: try r.skip()
         }
     }
@@ -265,8 +300,18 @@ public func decodeMultiArr1(_ r: any SpecReader) throws -> MultiArr1 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "names": names = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
-        case "scores": scores = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
+        case "names":
+            var tmp7: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp7.append(try r.readString()) }
+            try r.endArray()
+            names = tmp7
+        case "scores":
+            var tmp8: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp8.append(try r.readInt32()) }
+            try r.endArray()
+            scores = tmp8
         default: try r.skip()
         }
     }
@@ -308,9 +353,24 @@ public func decodeMultiArr2(_ r: any SpecReader) throws -> MultiArr2 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "flags": flags = try { () throws -> [Bool] in var arr: [Bool] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBool()) }; try r.endArray(); return arr }()
-        case "values": values = try { () throws -> [Double] in var arr: [Double] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat64()) }; try r.endArray(); return arr }()
-        case "payload": payload = try { () throws -> [Data] in var arr: [Data] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBytes()) }; try r.endArray(); return arr }()
+        case "flags":
+            var tmp9: [Bool] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp9.append(try r.readBool()) }
+            try r.endArray()
+            flags = tmp9
+        case "values":
+            var tmp10: [Double] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp10.append(try r.readFloat64()) }
+            try r.endArray()
+            values = tmp10
+        case "payload":
+            var tmp11: [Data] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp11.append(try r.readBytes()) }
+            try r.endArray()
+            payload = tmp11
         default: try r.skip()
         }
     }
@@ -352,9 +412,24 @@ public func decodeMultiArr3(_ r: any SpecReader) throws -> MultiArr3 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "a": a = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
-        case "b": b = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
-        case "c": c = try { () throws -> [Double] in var arr: [Double] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat64()) }; try r.endArray(); return arr }()
+        case "a":
+            var tmp12: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp12.append(try r.readString()) }
+            try r.endArray()
+            a = tmp12
+        case "b":
+            var tmp13: [Int32] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp13.append(try r.readInt32()) }
+            try r.endArray()
+            b = tmp13
+        case "c":
+            var tmp14: [Double] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp14.append(try r.readFloat64()) }
+            try r.endArray()
+            c = tmp14
         default: try r.skip()
         }
     }
@@ -392,8 +467,18 @@ public func decodeMultiArr4(_ r: any SpecReader) throws -> MultiArr4 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "ids": ids = try { () throws -> [Int64] in var arr: [Int64] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt64()) }; try r.endArray(); return arr }()
-        case "tags": tags = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "ids":
+            var tmp15: [Int64] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp15.append(try r.readInt64()) }
+            try r.endArray()
+            ids = tmp15
+        case "tags":
+            var tmp16: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp16.append(try r.readString()) }
+            try r.endArray()
+            tags = tmp16
         default: try r.skip()
         }
     }
@@ -435,9 +520,24 @@ public func decodeMultiArr5(_ r: any SpecReader) throws -> MultiArr5 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "xs": xs = try { () throws -> [UInt64] in var arr: [UInt64] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readUint64()) }; try r.endArray(); return arr }()
-        case "ys": ys = try { () throws -> [Float] in var arr: [Float] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat32()) }; try r.endArray(); return arr }()
-        case "zs": zs = try { () throws -> [Bool] in var arr: [Bool] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBool()) }; try r.endArray(); return arr }()
+        case "xs":
+            var tmp17: [UInt64] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp17.append(try r.readUint64()) }
+            try r.endArray()
+            xs = tmp17
+        case "ys":
+            var tmp18: [Float] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp18.append(try r.readFloat32()) }
+            try r.endArray()
+            ys = tmp18
+        case "zs":
+            var tmp19: [Bool] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp19.append(try r.readBool()) }
+            try r.endArray()
+            zs = tmp19
         default: try r.skip()
         }
     }

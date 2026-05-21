@@ -302,7 +302,10 @@ public func decodeOptNestInner(_ r: any SpecReader) throws -> OptNestInner {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Inner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeInner(r) }()
+        case "nested":
+            var tmp66: Inner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp66 = try decodeInner(r) }
+            nested = tmp66
         default: try r.skip()
         }
     }
@@ -343,7 +346,10 @@ public func decodeOptNestCoord(_ r: any SpecReader) throws -> OptNestCoord {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Coord? in if try r.isNull() { try r.readNull(); return nil }; return try decodeCoord(r) }()
+        case "nested":
+            var tmp67: Coord? = nil
+            if try r.isNull() { try r.readNull() } else { tmp67 = try decodeCoord(r) }
+            nested = tmp67
         default: try r.skip()
         }
     }
@@ -384,7 +390,10 @@ public func decodeOptNestIdVal(_ r: any SpecReader) throws -> OptNestIdVal {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> IdVal? in if try r.isNull() { try r.readNull(); return nil }; return try decodeIdVal(r) }()
+        case "nested":
+            var tmp68: IdVal? = nil
+            if try r.isNull() { try r.readNull() } else { tmp68 = try decodeIdVal(r) }
+            nested = tmp68
         default: try r.skip()
         }
     }
@@ -425,7 +434,10 @@ public func decodeOptNestLabel(_ r: any SpecReader) throws -> OptNestLabel {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Label? in if try r.isNull() { try r.readNull(); return nil }; return try decodeLabel(r) }()
+        case "nested":
+            var tmp69: Label? = nil
+            if try r.isNull() { try r.readNull() } else { tmp69 = try decodeLabel(r) }
+            nested = tmp69
         default: try r.skip()
         }
     }
@@ -466,7 +478,10 @@ public func decodeOptNestMoney(_ r: any SpecReader) throws -> OptNestMoney {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Money? in if try r.isNull() { try r.readNull(); return nil }; return try decodeMoney(r) }()
+        case "nested":
+            var tmp70: Money? = nil
+            if try r.isNull() { try r.readNull() } else { tmp70 = try decodeMoney(r) }
+            nested = tmp70
         default: try r.skip()
         }
     }
@@ -507,7 +522,10 @@ public func decodeOptNestRange32(_ r: any SpecReader) throws -> OptNestRange32 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Range32? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRange32(r) }()
+        case "nested":
+            var tmp71: Range32? = nil
+            if try r.isNull() { try r.readNull() } else { tmp71 = try decodeRange32(r) }
+            nested = tmp71
         default: try r.skip()
         }
     }
@@ -548,7 +566,10 @@ public func decodeOptNestAddr(_ r: any SpecReader) throws -> OptNestAddr {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Addr? in if try r.isNull() { try r.readNull(); return nil }; return try decodeAddr(r) }()
+        case "nested":
+            var tmp72: Addr? = nil
+            if try r.isNull() { try r.readNull() } else { tmp72 = try decodeAddr(r) }
+            nested = tmp72
         default: try r.skip()
         }
     }
@@ -589,7 +610,10 @@ public func decodeOptNestPoint3(_ r: any SpecReader) throws -> OptNestPoint3 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "label": label = try r.readString()
-        case "nested": nested = try { () throws -> Point3? in if try r.isNull() { try r.readNull(); return nil }; return try decodePoint3(r) }()
+        case "nested":
+            var tmp73: Point3? = nil
+            if try r.isNull() { try r.readNull() } else { tmp73 = try decodePoint3(r) }
+            nested = tmp73
         default: try r.skip()
         }
     }

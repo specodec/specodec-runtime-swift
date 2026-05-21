@@ -30,7 +30,16 @@ public func decodeOptArr1(_ r: any SpecReader) throws -> OptArr1 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "req": req = try r.readString()
-        case "items": items = try { () throws -> [Int32] in var arr: [Int32] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readInt32()) }; try r.endArray(); return arr }()
+        case "items":
+            var tmp26: [Int32]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [Int32] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readInt32()) }
+                try r.endArray()
+                tmp26 = _arr
+            }
+            items = tmp26
         default: try r.skip()
         }
     }
@@ -76,8 +85,26 @@ public func decodeOptArr2(_ r: any SpecReader) throws -> OptArr2 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "id": id = try r.readInt32()
-        case "names": names = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
-        case "flags": flags = try { () throws -> [Bool] in var arr: [Bool] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBool()) }; try r.endArray(); return arr }()
+        case "names":
+            var tmp27: [String]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [String] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readString()) }
+                try r.endArray()
+                tmp27 = _arr
+            }
+            names = tmp27
+        case "flags":
+            var tmp28: [Bool]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [Bool] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readBool()) }
+                try r.endArray()
+                tmp28 = _arr
+            }
+            flags = tmp28
         default: try r.skip()
         }
     }
@@ -118,8 +145,26 @@ public func decodeOptArr3(_ r: any SpecReader) throws -> OptArr3 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "a": a = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
-        case "b": b = try { () throws -> [Double] in var arr: [Double] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readFloat64()) }; try r.endArray(); return arr }()
+        case "a":
+            var tmp29: [String]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [String] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readString()) }
+                try r.endArray()
+                tmp29 = _arr
+            }
+            a = tmp29
+        case "b":
+            var tmp30: [Double]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [Double] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readFloat64()) }
+                try r.endArray()
+                tmp30 = _arr
+            }
+            b = tmp30
         default: try r.skip()
         }
     }
@@ -160,7 +205,16 @@ public func decodeOptArr4(_ r: any SpecReader) throws -> OptArr4 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "payload": payload = try r.readBytes()
-        case "chunks": chunks = try { () throws -> [Data] in var arr: [Data] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readBytes()) }; try r.endArray(); return arr }()
+        case "chunks":
+            var tmp31: [Data]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [Data] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try r.readBytes()) }
+                try r.endArray()
+                tmp31 = _arr
+            }
+            chunks = tmp31
         default: try r.skip()
         }
     }
@@ -200,7 +254,16 @@ public func decodeOptArr5(_ r: any SpecReader) throws -> OptArr5 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "models": models = try { () throws -> [Inner] in var arr: [Inner] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeInner(r)) }; try r.endArray(); return arr }()
+        case "models":
+            var tmp32: [Inner]? = nil
+            if try r.isNull() { try r.readNull() } else {
+                var _arr: [Inner] = []
+                try r.beginArray()
+                while try r.hasNextElement() { _arr.append(try decodeInner(r)) }
+                try r.endArray()
+                tmp32 = _arr
+            }
+            models = tmp32
         case "name": name = try r.readString()
         default: try r.skip()
         }
@@ -286,9 +349,18 @@ public func decodeNestOpt2(_ r: any SpecReader) throws -> NestOpt2 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "a": a = try { () throws -> IdVal? in if try r.isNull() { try r.readNull(); return nil }; return try decodeIdVal(r) }()
-        case "b": b = try { () throws -> IdVal? in if try r.isNull() { try r.readNull(); return nil }; return try decodeIdVal(r) }()
-        case "c": c = try { () throws -> IdVal? in if try r.isNull() { try r.readNull(); return nil }; return try decodeIdVal(r) }()
+        case "a":
+            var tmp33: IdVal? = nil
+            if try r.isNull() { try r.readNull() } else { tmp33 = try decodeIdVal(r) }
+            a = tmp33
+        case "b":
+            var tmp34: IdVal? = nil
+            if try r.isNull() { try r.readNull() } else { tmp34 = try decodeIdVal(r) }
+            b = tmp34
+        case "c":
+            var tmp35: IdVal? = nil
+            if try r.isNull() { try r.readNull() } else { tmp35 = try decodeIdVal(r) }
+            c = tmp35
         default: try r.skip()
         }
     }
@@ -329,7 +401,10 @@ public func decodeNestOpt3(_ r: any SpecReader) throws -> NestOpt3 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "money": money = try decodeMoney(r)
-        case "value_range": valueRange = try { () throws -> Range32? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRange32(r) }()
+        case "value_range":
+            var tmp36: Range32? = nil
+            if try r.isNull() { try r.readNull() } else { tmp36 = try decodeRange32(r) }
+            valueRange = tmp36
         default: try r.skip()
         }
     }
@@ -374,8 +449,14 @@ public func decodeNestOpt4(_ r: any SpecReader) throws -> NestOpt4 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "addr": addr = try { () throws -> Addr? in if try r.isNull() { try r.readNull(); return nil }; return try decodeAddr(r) }()
-        case "coord": coord = try { () throws -> Coord? in if try r.isNull() { try r.readNull(); return nil }; return try decodeCoord(r) }()
+        case "addr":
+            var tmp37: Addr? = nil
+            if try r.isNull() { try r.readNull() } else { tmp37 = try decodeAddr(r) }
+            addr = tmp37
+        case "coord":
+            var tmp38: Coord? = nil
+            if try r.isNull() { try r.readNull() } else { tmp38 = try decodeCoord(r) }
+            coord = tmp38
         case "name": name = try r.readString()
         default: try r.skip()
         }
@@ -422,7 +503,10 @@ public func decodeNestOpt5(_ r: any SpecReader) throws -> NestOpt5 {
         switch try r.readFieldName() {
         case "point": point = try decodePoint3(r)
         case "addr": addr = try decodeAddr(r)
-        case "label": label = try { () throws -> Label? in if try r.isNull() { try r.readNull(); return nil }; return try decodeLabel(r) }()
+        case "label":
+            var tmp39: Label? = nil
+            if try r.isNull() { try r.readNull() } else { tmp39 = try decodeLabel(r) }
+            label = tmp39
         default: try r.skip()
         }
     }
@@ -463,7 +547,10 @@ public func decodeNestOptInner1(_ r: any SpecReader) throws -> NestOptInner1 {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "tag": tag = try r.readString()
-        case "nested": nested = try { () throws -> OptInner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeOptInner(r) }()
+        case "nested":
+            var tmp40: OptInner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp40 = try decodeOptInner(r) }
+            nested = tmp40
         default: try r.skip()
         }
     }
@@ -543,8 +630,14 @@ public func decodeNestOptInner3(_ r: any SpecReader) throws -> NestOptInner3 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "outer": outer = try { () throws -> OptInner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeOptInner(r) }()
-        case "nested": nested = try { () throws -> OptInner? in if try r.isNull() { try r.readNull(); return nil }; return try decodeOptInner(r) }()
+        case "outer":
+            var tmp41: OptInner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp41 = try decodeOptInner(r) }
+            outer = tmp41
+        case "nested":
+            var tmp42: OptInner? = nil
+            if try r.isNull() { try r.readNull() } else { tmp42 = try decodeOptInner(r) }
+            nested = tmp42
         default: try r.skip()
         }
     }
@@ -718,7 +811,12 @@ public func decodeDeepNest4(_ r: any SpecReader) throws -> DeepNest4 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "coords": coords = try { () throws -> [Coord] in var arr: [Coord] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeCoord(r)) }; try r.endArray(); return arr }()
+        case "coords":
+            var tmp43: [Coord] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp43.append(try decodeCoord(r)) }
+            try r.endArray()
+            coords = tmp43
         case "nested": nested = try decodeInner(r)
         case "tag": tag = try r.readString()
         default: try r.skip()
@@ -762,7 +860,12 @@ public func decodeDeepNest5(_ r: any SpecReader) throws -> DeepNest5 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "labels": labels = try { () throws -> [Label] in var arr: [Label] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeLabel(r)) }; try r.endArray(); return arr }()
+        case "labels":
+            var tmp44: [Label] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp44.append(try decodeLabel(r)) }
+            try r.endArray()
+            labels = tmp44
         case "money": money = try decodeMoney(r)
         case "name": name = try r.readString()
         default: try r.skip()
@@ -808,8 +911,16 @@ public func decodeDeepNest6(_ r: any SpecReader) throws -> DeepNest6 {
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "items": items = try { () throws -> [IdVal] in var arr: [IdVal] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try decodeIdVal(r)) }; try r.endArray(); return arr }()
-        case "addr": addr = try { () throws -> Addr? in if try r.isNull() { try r.readNull(); return nil }; return try decodeAddr(r) }()
+        case "items":
+            var tmp45: [IdVal] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp45.append(try decodeIdVal(r)) }
+            try r.endArray()
+            items = tmp45
+        case "addr":
+            var tmp46: Addr? = nil
+            if try r.isNull() { try r.readNull() } else { tmp46 = try decodeAddr(r) }
+            addr = tmp46
         case "coord": coord = try decodeCoord(r)
         default: try r.skip()
         }

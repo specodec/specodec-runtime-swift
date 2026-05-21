@@ -127,7 +127,12 @@ public func decodeEnumArrayHolder(_ r: any SpecReader) throws -> EnumArrayHolder
     try r.beginObject()
     while try r.hasNextField() {
         switch try r.readFieldName() {
-        case "colors": colors = try { () throws -> [String] in var arr: [String] = []; try r.beginArray(); while try r.hasNextElement() { arr.append(try r.readString()) }; try r.endArray(); return arr }()
+        case "colors":
+            var tmp25: [String] = []
+            try r.beginArray()
+            while try r.hasNextElement() { tmp25.append(try r.readString()) }
+            try r.endArray()
+            colors = tmp25
         default: try r.skip()
         }
     }

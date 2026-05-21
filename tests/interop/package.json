@@ -1,8 +1,7 @@
 {
-  "name": "specodec-swift-interop-test",
-  "version": "0.0.1",
+  "name": "specodec-interop-swift",
+  "version": "1.0.0",
   "type": "module",
-  "private": true,
   "scripts": {
     "test": "node test.mjs"
   },

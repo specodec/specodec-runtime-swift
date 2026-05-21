@@ -30,7 +30,10 @@ public func decodeRecList(_ r: any SpecReader) throws -> RecList {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "value": value = try r.readInt32()
-        case "next": next = try { () throws -> RecList? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecList(r) }()
+        case "next":
+            var tmp74: RecList? = nil
+            if try r.isNull() { try r.readNull() } else { tmp74 = try decodeRecList(r) }
+            next = tmp74
         default: try r.skip()
         }
     }
@@ -76,8 +79,14 @@ public func decodeRecTree(_ r: any SpecReader) throws -> RecTree {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "value": value = try r.readString()
-        case "left_node": leftNode = try { () throws -> RecTree? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecTree(r) }()
-        case "right_node": rightNode = try { () throws -> RecTree? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecTree(r) }()
+        case "left_node":
+            var tmp75: RecTree? = nil
+            if try r.isNull() { try r.readNull() } else { tmp75 = try decodeRecTree(r) }
+            leftNode = tmp75
+        case "right_node":
+            var tmp76: RecTree? = nil
+            if try r.isNull() { try r.readNull() } else { tmp76 = try decodeRecTree(r) }
+            rightNode = tmp76
         default: try r.skip()
         }
     }
@@ -123,7 +132,10 @@ public func decodeRecChain(_ r: any SpecReader) throws -> RecChain {
         switch try r.readFieldName() {
         case "id": id = try r.readInt32()
         case "label": label = try r.readString()
-        case "next": next = try { () throws -> RecChain? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecChain(r) }()
+        case "next":
+            var tmp77: RecChain? = nil
+            if try r.isNull() { try r.readNull() } else { tmp77 = try decodeRecChain(r) }
+            next = tmp77
         default: try r.skip()
         }
     }
@@ -164,7 +176,10 @@ public func decodeRecWrap(_ r: any SpecReader) throws -> RecWrap {
     while try r.hasNextField() {
         switch try r.readFieldName() {
         case "payload": payload = try r.readBytes()
-        case "nested": nested = try { () throws -> RecWrap? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecWrap(r) }()
+        case "nested":
+            var tmp78: RecWrap? = nil
+            if try r.isNull() { try r.readNull() } else { tmp78 = try decodeRecWrap(r) }
+            nested = tmp78
         default: try r.skip()
         }
     }
@@ -215,7 +230,10 @@ public func decodeRecWide(_ r: any SpecReader) throws -> RecWide {
         case "a": a = try r.readInt32()
         case "b": b = try r.readString()
         case "c": c = try r.readFloat64()
-        case "child": child = try { () throws -> RecWide? in if try r.isNull() { try r.readNull(); return nil }; return try decodeRecWide(r) }()
+        case "child":
+            var tmp79: RecWide? = nil
+            if try r.isNull() { try r.readNull() } else { tmp79 = try decodeRecWide(r) }
+            child = tmp79
         default: try r.skip()
         }
     }
