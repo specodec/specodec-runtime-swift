@@ -1,4 +1,5 @@
 import Glibc
+import Specodec
 
 func trim(_ s: Substring) -> Substring {
     var s = s
